@@ -14,7 +14,7 @@ public class Aula {
 
 
 
-    public Aula(Curso cursos[],UnidadeCurricular uc,Turno turno, Turma turmas[],LocalTime horaInicio,LocalTime horaFim,
+    public Aula(Curso cursos[], UnidadeCurricular uc, Turno turno, Turma turmas[], LocalTime horaInicio, LocalTime horaFim,
                 Sala sala, LocalDate data){
         this.cursos=cursos;
         this.uc=uc;
