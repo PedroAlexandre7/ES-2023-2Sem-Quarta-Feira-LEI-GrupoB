@@ -4,9 +4,8 @@ public class Sala {
 
 
     public Sala(String nome, int lotacao){
-        this.nome = nome;
         this.lotacao = lotacao;
-
+        this.nome = nome;
     }
     @Override
     public String toString(){
