@@ -67,12 +67,12 @@ public class Horario {
                 UnidadeCurricular uc = new UnidadeCurricular(campos[1]);
                 Turno turno = new Turno(Integer.parseInt(campos[4]),campos[2]);
                 Turma[] turma = criarTurmas(campos[3]);
-                LocalTime horaInicio = campos[4];
-                LocalTime horaFim = campos[5];
-                Sala sala = campos[6];
-                String data = campos[7];
-                Aula aula = new Aula(cursos, uc, turno, turma, horaInicio, horaFim, sala, data);
-                adicionarAula(aula);
+//                LocalTime horaInicio = campos[4];
+//                LocalTime horaFim = campos[5];
+//                Sala sala = campos[6];
+//                String data = campos[7];
+//                Aula aula = new Aula(cursos, uc, turno, turma, horaInicio, horaFim, sala, data);
+//                adicionarAula(aula);
             }
         } catch (IOException e) {
             System.out.println("Erro ao ler arquivo CSV: " + e.getMessage());

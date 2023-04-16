@@ -1,5 +1,5 @@
 public class Turma {
-    private String nome;
+    private final String nome;
 
     public Turma(String nome){
         this.nome = nome;
