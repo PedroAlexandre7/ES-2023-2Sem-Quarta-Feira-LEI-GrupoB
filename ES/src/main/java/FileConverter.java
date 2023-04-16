@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -8,7 +9,6 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +22,14 @@ public class FileConverter {
 
     public static void convertCSVtoJSON(File inputFile, String outputFilePath, char separator) {
 
+        File jsonFile = new File(outputFilePath);
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema csvSchema = CsvSchema.builder().setColumnSeparator(separator).setUseHeader(true).build();
-
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        File jsonFile = new File(outputFilePath);
-
-        try (MappingIterator<Object> map = csvMapper.readerFor(Map.class).with(csvSchema).readValues(inputFile)) {
-            objectMapper.writeValue(jsonFile, map.readAll());
+        try (MappingIterator<Object> mappingIterator = csvMapper.readerFor(Map.class).with(csvSchema).readValues(inputFile)) {
+            objectMapper.writeValue(jsonFile, mappingIterator.readAll());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,31 +38,23 @@ public class FileConverter {
 
     public static void convertJSONtoCSV(File inputFile, String outputFilePath, char separator) {
 
-        File csvFile = new File(outputFilePath);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, ArrayList.class);
+            File csvFile = new File(outputFilePath);
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>(){});
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), separator, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
-
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), separator, CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-            // Write headers
             String[] headers = data.get(0).keySet().toArray(new String[0]);
             writer.writeNext(headers);
+            for (Map<String, String> row : data)
+                writer.writeNext(row.values().toArray(new String[0]));
 
-            // Write data
-            for (Map<String, String> row : data) {
-                String[] values = row.values().toArray(new String[0]);
-                writer.writeNext(values);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //    public static void convertJSONtoCSV(File jsonFile) { // FIXME Este é o do Afonso, Não funciona
+    //    public static void convertJSONtoCSV(File jsonFile) { // FIXME Este é o do Afonso
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        MappingIterator<Horario> dataIterator;
 //        List<Horario> dataList;
