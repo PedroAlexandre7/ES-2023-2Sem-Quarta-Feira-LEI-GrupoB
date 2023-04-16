@@ -20,8 +20,6 @@ public class FileConverter {
         convertJSONtoCSV(new File("output.json"), "output2.csv", ';');
     }
 
-
-
     public static void convertCSVtoJSON(File inputFile, String outputFilePath, char separator) {
 
         CsvMapper csvMapper = new CsvMapper();
@@ -45,16 +43,13 @@ public class FileConverter {
         File csvFile = new File(outputFilePath);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Map<String, String>> data;
 
         try {
-            data = objectMapper.readValue(inputFile, ArrayList.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, ArrayList.class);
 
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFile), separator, CSVWriter.NO_QUOTE_CHARACTER,
-                CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), separator, CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
             // Write headers
             String[] headers = data.get(0).keySet().toArray(new String[0]);
             writer.writeNext(headers);
