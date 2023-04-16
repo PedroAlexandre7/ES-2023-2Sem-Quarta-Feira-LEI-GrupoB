@@ -1,16 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
 
 
 public class Horario {
     private List<Aula> aulas;
-    private List<Curso> cursos = new ArrayList<>();
-    private List<Turma> turmas = new ArrayList<>();
 
     public Horario(List<Aula> aulas) {
         this.aulas = aulas;
@@ -28,7 +28,7 @@ public class Horario {
         aulas.remove(aula);
     }
 
-    private Curso[] criarCursos(String campo) {
+   /* private Curso[] criarCursos(String campo) {
         String cursos[] = campo.split(String.valueOf(','));
         Curso[] cursos1 = new Curso[cursos.length];
         int i = 0;
@@ -40,10 +40,10 @@ public class Horario {
             i++;
         }
         return cursos1;
-    }
+    }*/
 
-    private Turma[] criarTurmas(String campo) {
-        String[] turmas = campo.split(", "); //TODO VERIFICAR SE FUNCIONA
+   /* private Turma[] criarTurmas(String campo) {
+        String[] turmas = campo.split(", ");
         Turma[] turmas1 = new Turma[turmas.length];
         int i = 0;
         for (String nome : turmas) {
@@ -54,23 +54,31 @@ public class Horario {
             i++;
         }
         return turmas1;
-    }
+    }*/
 
     public void lerCSV(String caminhoArquivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             br.readLine(); //serve para descartar a primeira linha
             String linha;
             while ((linha = br.readLine()) != null) {
-                System.out.println(linha);
                 String[] campos = linha.split(String.valueOf(';'));
-                Curso[] cursos = criarCursos(campos[0]);
-                UnidadeCurricular uc = new UnidadeCurricular(campos[1]);
+                String cursos = campos[0];
+
+                String uc = campos[1];
+
+                String turma = campos[3];
+
                 Turno turno = new Turno(Integer.parseInt(campos[4]),campos[2]);
-                Turma[] turma = criarTurmas(campos[3]);
-                LocalTime horaInicio = campos[4];
-                LocalTime horaFim = campos[5];
-                Sala sala = campos[6];
-                String data = campos[7];
+
+                LocalTime horaInicio = LocalTime.parse(campos[6]);
+
+                LocalTime horaFim = LocalTime.parse(campos[7]);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate data = LocalDate.parse(campos[8], formatter);
+
+                Sala sala = new Sala(campos[9],Integer.parseInt(campos[10]));
+
                 Aula aula = new Aula(cursos, uc, turno, turma, horaInicio, horaFim, sala, data);
                 adicionarAula(aula);
             }

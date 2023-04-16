@@ -7,14 +7,14 @@ public class Aula {
     private LocalTime horaFim;
     private LocalTime horaInicio;
     private Sala sala;
-    private Turma turmas[];
+    private String turmas;
     private Turno turno;
-    private UnidadeCurricular uc;
-    private Curso cursos[];
+    private String uc;
+    private String cursos;
 
 
 
-    public Aula(Curso cursos[], UnidadeCurricular uc, Turno turno, Turma turmas[], LocalTime horaInicio, LocalTime horaFim,
+    public Aula(String cursos, String uc, Turno turno, String turmas, LocalTime horaInicio, LocalTime horaFim,
                 Sala sala, LocalDate data){
         this.cursos=cursos;
         this.uc=uc;

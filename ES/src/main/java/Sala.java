@@ -1,7 +1,9 @@
 public class Sala {
     private int lotacao;
+    private String nome;
 
-    public Sala(int lotacao){
+    public Sala(String nome, int lotacao){
         this.lotacao = lotacao;
+        this.nome = nome;
     }
 }
