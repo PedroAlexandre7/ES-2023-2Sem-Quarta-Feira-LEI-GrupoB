@@ -1,10 +1,12 @@
 public class Sala {
-    private int lotacao;
     private String nome;
+    private int lotacao;
+
 
     public Sala(String nome, int lotacao){
-        this.lotacao = lotacao;
         this.nome = nome;
+        this.lotacao = lotacao;
+
     }
     @Override
     public String toString(){
