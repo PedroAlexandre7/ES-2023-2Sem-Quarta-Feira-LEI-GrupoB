@@ -6,4 +6,8 @@ public class Turno {
         this.nome = nome;
         this.numInscritos = numInscritos;
     }
+    @Override
+    public String toString(){
+        return nome + " | "+numInscritos + " inscritos";
+    }
 }

@@ -6,4 +6,8 @@ public class Sala {
         this.lotacao = lotacao;
         this.nome = nome;
     }
+    @Override
+    public String toString(){
+        return nome + " | lotação: "+lotacao ;
+    }
 }

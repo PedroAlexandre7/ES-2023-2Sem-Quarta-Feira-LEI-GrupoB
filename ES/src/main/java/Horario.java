@@ -28,40 +28,18 @@ public class Horario {
         aulas.remove(aula);
     }
 
-   /* private Curso[] criarCursos(String campo) {
-        String cursos[] = campo.split(String.valueOf(','));
-        Curso[] cursos1 = new Curso[cursos.length];
-        int i = 0;
-        for (String nome : cursos) {
-            if(!this.cursos.contains(cursos[i])) {
-                cursos1[i] = new Curso(nome);
-                this.cursos.add(cursos1[i]);
-            }
-            i++;
-        }
-        return cursos1;
-    }*/
-
-   /* private Turma[] criarTurmas(String campo) {
-        String[] turmas = campo.split(", ");
-        Turma[] turmas1 = new Turma[turmas.length];
-        int i = 0;
-        for (String nome : turmas) {
-            if (!this.turmas.contains(turmas[i])) {
-                turmas1[i] = new Turma(nome);
-                this.turmas.add(turmas1[i]);
-            }
-            i++;
-        }
-        return turmas1;
-    }*/
-
     public void lerCSV(String caminhoArquivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             br.readLine(); //serve para descartar a primeira linha
             String linha;
+            int i = 0;
+
             while ((linha = br.readLine()) != null) {
-                String[] campos = linha.split(String.valueOf(';'));
+                String[] campos = linha.split(";", -1);
+                System.out.println(linha);
+                for (String part : campos) {
+                    System.out.println(part);
+                }
                 String cursos = campos[0];
 
                 String uc = campos[1];
@@ -73,14 +51,30 @@ public class Horario {
                 LocalTime horaInicio = LocalTime.parse(campos[6]);
 
                 LocalTime horaFim = LocalTime.parse(campos[7]);
+                LocalDate data;
+                 if(!campos[8].equals("")){
+                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                     data = LocalDate.parse(campos[8], formatter);
+                 }
+                 else {
+                     data = null;
+                 }
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate data = LocalDate.parse(campos[8], formatter);
-
-                Sala sala = new Sala(campos[9],Integer.parseInt(campos[10]));
+                Sala sala;
+                if(!campos[9].equals("") && !campos[10].equals(""))
+                     sala = new Sala(campos[9],Integer.parseInt(campos[10]));
+                else if(!campos[9].equals(""))
+                     sala = new Sala(campos[9], 0);
+                else if(!campos[10].equals(""))
+                    sala = new Sala("", Integer.parseInt(campos[10]));
+                else
+                    sala = new Sala("",0);
 
                 Aula aula = new Aula(cursos, uc, turno, turma, horaInicio, horaFim, sala, data);
                 adicionarAula(aula);
+                System.out.println(aula);
+                i++;
+                System.out.println(i);
             }
         } catch (IOException e) {
             System.out.println("Erro ao ler arquivo CSV: " + e.getMessage());
@@ -89,8 +83,7 @@ public class Horario {
 
     public static void main(String[] args) {
         Horario h = new Horario();
-        h.lerCSV("C:/Users/tiago/IdeaProjects/LEI4-GrupoB/horario_exemplo.csv");
+        h.lerCSV("C:/Users/tiago/IdeaProjects/LEI4-GrupoB/input.csv");
     }
 
 }
-
