@@ -4,4 +4,8 @@ public class Turma {
     public Turma(String nome){
         this.nome = nome;
     }
+
+    public String getNome() {
+        return nome;
+    }
 }
