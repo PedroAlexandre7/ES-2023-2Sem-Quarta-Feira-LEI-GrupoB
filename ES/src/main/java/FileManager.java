@@ -14,11 +14,14 @@ import java.util.*;
 
 public class FileManager {
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss");
+    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static void main(String[] args) {
         Horario horario = new Horario();
         horario.lerCSV("ES/input.csv");
+        DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' HH:mm:ss a");
         System.out.println(horario.getAulas().get(1).horaInicio().format(FORMATTER));
+//        System.out.println(horario.getAulas().get(1).data().format(FORMATTER));
     }
 
     public static File convertCSVtoJSON(File inputFile, String outputFilePath) {
@@ -74,9 +77,9 @@ public class FileManager {
                 aulaData.put("Turma", listToString(a.turmas()));
                 aulaData.put("Inscritos no turno", Integer.toString(a.turno().numInscritos()));
                 aulaData.put("Dia da semana", a.diaDaSemana());
-                aulaData.put("Hora início da aula", a.horaInicio().format(FORMATTER));
-                aulaData.put("Hora fim da aula", a.horaFim().format(FORMATTER));
-                aulaData.put("Data da aula", a.data().format(FORMATTER));
+                aulaData.put("Hora início da aula", a.horaInicio().format(TIME_FORMATTER));
+                aulaData.put("Hora fim da aula", a.horaFim().format(TIME_FORMATTER));
+                aulaData.put("Data da aula", a.data().format(DATE_FORMATTER));
 //                aulaData.put()
 
                 data.add(aulaData);
@@ -85,7 +88,7 @@ public class FileManager {
             File jsonFile = new File(outputFilePath);
             ObjectMapper objectMapper = new ObjectMapper();
 //            String jsonString = objectMapper.writeValueAsString("");
-            objectMapper.writeValue(jsonFile, h);
+            objectMapper.writeValue(jsonFile, data);
         } catch (IOException e) {
             System.err.println("saveInJSON(h, outputFilePath): Erro ao escrever no ficheiro");
         }
