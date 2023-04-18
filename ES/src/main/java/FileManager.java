@@ -5,13 +5,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.opencsv.CSVWriter;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class FileManager {
@@ -58,7 +55,6 @@ public class FileManager {
     }
 
 
-
     static public void saveInJSON(Horario h, String outputFilePath) {
         try {
 
@@ -69,21 +65,30 @@ public class FileManager {
             List<Map<String, String>> data = new ArrayList<>();
             for (Aula a : h.getAulas()) {
                 HashMap<String, String> aulaData = new HashMap<>();
-                aulaData.put("Curso", a.cursos().toString());
+                aulaData.put("Curso", listToString(a.cursos()));
                 aulaData.put("Unidade Curricular", a.uc());
-                aulaData.put("Turno", a.turno().toString());
+                aulaData.put("Turno", a.turno().nome());
+                aulaData.put("Turma", listToString(a.turmas()));
+                aulaData.put("Inscritos no turno", Integer.toString(a.turno().numInscritos()));
+
 
                 data.add(aulaData);
             }
 
             File jsonFile = new File(outputFilePath);
             ObjectMapper objectMapper = new ObjectMapper();
-            String jsonString = objectMapper.writeValueAsString("");
+//            String jsonString = objectMapper.writeValueAsString("");
             objectMapper.writeValue(jsonFile, h);
         } catch (IOException e) {
             System.err.println("saveInJSON(h, outputFilePath): Erro ao escrever no ficheiro");
         }
     }
 
+    private static String listToString(List<String> list) {
+        if (list.size() == 0)
+            return "";
+        String str = list.toString();
+        return str.substring(1, str.length() - 1);
+    }
 
 }
