@@ -2,16 +2,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.opencsv.CSVWriter;
 
 public class GravarHorario {
 
     // Esta função recebe um horário como parâmetro e guarda em formato CSV
-    public void gravaEmCSV(Horario h, String caminhoDeOutput) {
+    static public void gravaEmCSV(Horario h, String caminhoDeOutput) {
         try {
             File csvFile = new File(caminhoDeOutput);
-            CsvMapper csvMapper = new CsvMapper();
+            //CsvMapper csvMapper = new CsvMapper();//comentei tal como tinhas feito Leo
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
             for (Aula a : h.getAulas()) {
@@ -30,11 +31,12 @@ public class GravarHorario {
         }
     }
 
-    public void gravaEmJSON(Horario h, String caminhoDeOutput) {
+    static public void gravaEmJSON(Horario h, String caminhoDeOutput) {
         try {
             File jsonFile = new File(caminhoDeOutput);
-
-        } catch (Exception e) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(jsonFile, h);
+        } catch (IOException e) {
             System.err.println("gravaEmJSON(h,caminhoDeOutput): Erro ao escrever no ficheiro");
         }
     }
