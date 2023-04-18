@@ -28,9 +28,9 @@ public class Horario {
 
     public static void main(String[] args) {
         Horario h = new Horario();
-        h.lerCSV("input.csv");
+        //h.lerCSV("input.csv");
 
-//        h.lerJSON("input.json");
+        h.lerJSON("input.json");
         //System.out.println(h.getAulas());
     }
 
@@ -76,7 +76,7 @@ public class Horario {
         }
     }
 
-    public void lerJSON(String caminhoArquivo) {
+    /*public void lerJSON(String caminhoArquivo) {
         File inputFile = new File(caminhoArquivo);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -91,4 +91,34 @@ public class Horario {
 
     }
 
-}
+     */
+
+    public void lerJSON(String caminhoArquivo) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+            try {
+                File inputFile = new File(caminhoArquivo);
+                List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
+                });
+                for (Map<String, String> row : data) {
+                    List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
+                    Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
+                    List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    LocalDate dataAula = LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                    String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
+                    int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
+                    Sala sala = new Sala(nomeSala, lotacaoSala);
+                    Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
+                    adicionarAula(aula);
+                }
+            } catch (IOException e) {
+                System.out.println("Erro ao ler arquivo JSON: " + e.getMessage());
+            }
+    }
+
+
+
+
+        }
