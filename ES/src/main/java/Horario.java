@@ -29,30 +29,12 @@ public class Horario {
     public static void main(String[] args) {
         Horario h = new Horario();
         h.lerCSV("input.csv");
-        h.testarSeFezBemOuSejaSeNaoTemNenhumaVirgulaMasApagarEsteMetodoDepoisPlsOk();
 
 //        h.lerJSON("input.json");
         //System.out.println(h.getAulas());
     }
 
-    public void testarSeFezBemOuSejaSeNaoTemNenhumaVirgulaMasApagarEsteMetodoDepoisPlsOk() { //TODO Remover depois
-        List<Aula> aulas = getAulas();
-        for (Aula aula : aulas) {
-            if (aula.getUc().contains(",")) {
-                System.out.println("UC: " + aula.getUc());
-            }
-            for (String turma : aula.getTurmas())
-                if (turma.contains(",")) {
-                    System.out.println("Turma: " + turma);
-                }
-            for (String curso : aula.getCursos())
-                if (curso.contains(",")) {
-                    System.out.println("Curso: " + curso);
-                }
 
-        }
-
-    }
 
 
     public List<Aula> getAulas() {
@@ -106,7 +88,6 @@ public class Horario {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 
