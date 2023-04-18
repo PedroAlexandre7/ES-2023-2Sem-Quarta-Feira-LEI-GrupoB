@@ -5,19 +5,21 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.opencsv.CSVWriter;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class FileManager {
 
     public static void main(String[] args) {
-        convertCSVtoJSON(new File("input.csv"), "output.json");
-        convertJSONtoCSV(new File("input.json"), "output.csv");
-        convertJSONtoCSV(new File("output.json"), "output2.csv");
+        Horario horario = new Horario();
+        horario.lerCSV("ES/input.csv");
+        saveInJSON(horario, "output.json");
     }
 
     public static File convertCSVtoJSON(File inputFile, String outputFilePath) {
@@ -55,32 +57,28 @@ public class FileManager {
         return csvFile;
     }
 
-    static public void gravaEmCSV(Horario h, String caminhoDeOutput) {
-        try {
-            File csvFile = new File(caminhoDeOutput);
-            //CsvMapper csvMapper = new CsvMapper();//comentei tal como tinhas feito Leo
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-            for (Aula a : h.getAulas()) {
-                // TODO alterar os toStrings dos GETS
-                // TODO Desculpa ter metido isto em comentário mas a estrutura do horário mudou
-                // TODO btw acho q tem tá a ler isto é bue giro
-//                String[] rowData = { a.getCursos().toString(), a.getUcs().toString(), a.getTurno().getNome(),
-//                        a.getTurmas(),
-//                        Integer.toString(a.getTurno().getNumInscritos()), a.getData().getDayOfWeek().toString(),
-//                        a.getHoraInicio().toString(), a.getHoraFim().toString(), a.getData().toString(),
-//                        a.getSala().getNome(), Integer.toString(a.getSala().getLotacao()) };
-//                writer.writeNext(rowData);
-            }
-        } catch (IOException e) {
-            System.err.println("gravaEmCSV(h,caminhoDeOutput): Erro ao escrever no ficheiro");
-        }
-    }
+
 
     static public void saveInJSON(Horario h, String outputFilePath) {
         try {
+
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put();
+//            String json = jsonObject.toString(2);
+//            Files.write(Paths.get("output.json"), json.getBytes());
+            List<Map<String, String>> data = new ArrayList<>();
+            for (Aula a : h.getAulas()) {
+                HashMap<String, String> aulaData = new HashMap<>();
+                aulaData.put("Curso", a.cursos().toString());
+                aulaData.put("Unidade Curricular", a.uc());
+                aulaData.put("Turno", a.turno().toString());
+
+                data.add(aulaData);
+            }
+
             File jsonFile = new File(outputFilePath);
             ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = objectMapper.writeValueAsString("");
             objectMapper.writeValue(jsonFile, h);
         } catch (IOException e) {
             System.err.println("saveInJSON(h, outputFilePath): Erro ao escrever no ficheiro");
