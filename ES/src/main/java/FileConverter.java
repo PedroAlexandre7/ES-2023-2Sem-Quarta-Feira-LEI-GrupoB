@@ -20,7 +20,7 @@ public class FileConverter {
         convertJSONtoCSV(new File("output.json"), "output2.csv");
     }
 
-    public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
+    public static File convertCSVtoJSON(File inputFile, String outputFilePath) {
 
         File jsonFile = new File(outputFilePath);
         CsvMapper csvMapper = new CsvMapper();
@@ -33,13 +33,12 @@ public class FileConverter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return jsonFile;
     }
 
-    public static void convertJSONtoCSV(File inputFile, String outputFilePath) {
-
+    public static File convertJSONtoCSV(File inputFile, String outputFilePath) {
+        File csvFile = new File(outputFilePath);
         try {
-            File csvFile = new File(outputFilePath);
             ObjectMapper objectMapper = new ObjectMapper();
             List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>(){});
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
@@ -52,6 +51,7 @@ public class FileConverter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return csvFile;
     }
 
 

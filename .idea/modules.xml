@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ES/ES.iml" filepath="$PROJECT_DIR$/ES/ES.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/LEI4-GrupoB.iml" filepath="$PROJECT_DIR$/.idea/LEI4-GrupoB.iml" />
     </modules>
   </component>
