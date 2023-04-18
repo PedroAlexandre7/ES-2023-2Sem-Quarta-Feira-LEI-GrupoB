@@ -26,6 +26,35 @@ public class Horario {
         this.aulas = new ArrayList<>();
     }
 
+    public static void main(String[] args) {
+        Horario h = new Horario();
+        h.lerCSV("input.csv");
+        h.testarSeFezBemOuSejaSeNaoTemNenhumaVirgulaMasApagarEsteMetodoDepoisPlsOk();
+
+//        h.lerJSON("input.json");
+        //System.out.println(h.getAulas());
+    }
+
+    public void testarSeFezBemOuSejaSeNaoTemNenhumaVirgulaMasApagarEsteMetodoDepoisPlsOk() { //TODO Remover depois
+        List<Aula> aulas = getAulas();
+        for (Aula aula : aulas) {
+            if (aula.getUc().contains(",")) {
+                System.out.println("UC: " + aula.getUc());
+            }
+            for (String turma : aula.getTurmas())
+                if (turma.contains(",")) {
+                    System.out.println("Turma: " + turma);
+                }
+            for (String curso : aula.getCursos())
+                if (curso.contains(",")) {
+                    System.out.println("Curso: " + curso);
+                }
+
+        }
+
+    }
+
+
     public List<Aula> getAulas() {
         return aulas;
     }
@@ -49,16 +78,14 @@ public class Horario {
                 String[] campos = linha.split(";", -1);
 
                 List<String> cursos = Arrays.stream(campos[0].split(", ")).toList();
-
-                List<String> ucs = Arrays.stream(campos[1].split(", ")).toList();
-
-                Turno turno = new Turno(Integer.parseInt(campos[4]), campos[2]);
+                Turno turno = new Turno(campos[2],Integer.parseInt(campos[4]));
+                List<String> turmas = Arrays.stream(campos[3].split(", ")).toList();
                 LocalDate data = campos[8].isEmpty() ? null : LocalDate.parse(campos[8], DateTimeFormatter.ofPattern("dd/MM/yyyy")); // TODO Decidir se aula de horário sem data é para descartar ou não
                 String nomeSala = campos[9].isEmpty() ? "" : campos[9];
                 int lotacaoSala = campos[10].isEmpty() ? 0 : Integer.parseInt(campos[10]);
                 Sala sala = new Sala(nomeSala, lotacaoSala);
 
-                Aula aula = new Aula(cursos, ucs, turno, campos[3], LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
+                Aula aula = new Aula(cursos, campos[1], turno, turmas, LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
                 adicionarAula(aula);
 
             }
@@ -67,12 +94,13 @@ public class Horario {
         }
     }
 
-    public void lerJSON(String caminhoArquivo){
+    public void lerJSON(String caminhoArquivo) {
         File inputFile = new File(caminhoArquivo);
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>(){});
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
+            });
             for (Map<String, String> row : data)
                 System.out.println((row.values().toArray(new String[0])));
         } catch (IOException e) {
@@ -80,12 +108,6 @@ public class Horario {
         }
 
 
-    }
-
-    public static void main(String[] args) {
-        Horario h = new Horario();
-        h.lerJSON("input.json");
-        //System.out.println(h.getAulas());
     }
 
 }

@@ -9,16 +9,16 @@ public class Aula {
     private LocalTime horaFim;
     private LocalTime horaInicio;
     private Sala sala;
-    private String turmas;
+    private List<String> turmas;
     private Turno turno;
-    private List<String> ucs;
+    private String uc;
     private List<String> cursos;
     private String diaSemana;
 
-    public Aula(List<String> cursos, List<String> ucs, Turno turno, String turmas, LocalTime horaInicio, LocalTime horaFim,
+    public Aula(List<String> cursos, String uc, Turno turno, List<String> turmas, LocalTime horaInicio, LocalTime horaFim,
                 Sala sala, LocalDate data){
         this.cursos=cursos;
-        this.ucs=ucs;
+        this.uc =uc;
         this.turno = turno;
         this.turmas = turmas;
         this.horaInicio=horaInicio;
@@ -29,7 +29,7 @@ public class Aula {
 
     @Override
     public String toString(){
-        return "Cursos: " + cursos + "\nUC: " + ucs + "\nTurno: " + turno + "\nTurmas: "+ turmas + "\nHoraInicio: " + horaInicio
+        return "Cursos: " + cursos + "\nUC: " + uc + "\nTurno: " + turno + "\nTurmas: "+ turmas + "\nHoraInicio: " + horaInicio
                 + "\nHoraFim: "+ horaFim + "\nSala: " + sala + "\nData: " + data;
     }
 
@@ -54,7 +54,7 @@ public class Aula {
         return sala;
     }
 
-    public String getTurmas() {
+    public List<String> getTurmas() {
         return turmas;
     }
 
@@ -62,8 +62,8 @@ public class Aula {
         return turno;
     }
 
-    public List<String> getUcs() {
-        return ucs;
+    public String getUc() {
+        return uc;
     }
 
     public List<String> getCursos() {

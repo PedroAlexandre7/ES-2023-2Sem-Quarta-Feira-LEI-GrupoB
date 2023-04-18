@@ -15,16 +15,16 @@ import java.util.Map;
 public class FileConverter {
 
     public static void main(String[] args) {
-        convertCSVtoJSON(new File("input.csv"), "output.json", ';');
-        convertJSONtoCSV(new File("input.json"), "output.csv", ';');
-        convertJSONtoCSV(new File("output.json"), "output2.csv", ';');
+        convertCSVtoJSON(new File("input.csv"), "output.json");
+        convertJSONtoCSV(new File("input.json"), "output.csv");
+        convertJSONtoCSV(new File("output.json"), "output2.csv");
     }
 
-    public static void convertCSVtoJSON(File inputFile, String outputFilePath, char separator) {
+    public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
 
         File jsonFile = new File(outputFilePath);
         CsvMapper csvMapper = new CsvMapper();
-        CsvSchema csvSchema = CsvSchema.builder().setColumnSeparator(separator).setUseHeader(true).build();
+        CsvSchema csvSchema = CsvSchema.builder().setColumnSeparator(';').setUseHeader(true).build();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -36,13 +36,13 @@ public class FileConverter {
 
     }
 
-    public static void convertJSONtoCSV(File inputFile, String outputFilePath, char separator) {
+    public static void convertJSONtoCSV(File inputFile, String outputFilePath) {
 
         try {
             File csvFile = new File(outputFilePath);
             ObjectMapper objectMapper = new ObjectMapper();
             List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>(){});
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), separator, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             String[] headers = data.get(0).keySet().toArray(new String[0]);
             writer.writeNext(headers);
@@ -54,31 +54,5 @@ public class FileConverter {
         }
     }
 
-    //    public static void convertJSONtoCSV(File jsonFile) { // FIXME Este é o do Afonso
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        MappingIterator<Horario> dataIterator;
-//        List<Horario> dataList;
-//        try {
-//            dataIterator = objectMapper.readerFor(Horario.class).readValues(jsonFile);
-//            dataList = dataIterator.readAll();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.out.println(dataList.size());
-//        CsvMapper csvMapper = new CsvMapper();
-//        CsvSchema csvSchema = csvMapper.schemaFor(Horario.class).withHeader();
-//        String csv;
-//        try {
-//            csv = csvMapper.writer(csvSchema).writeValueAsString(dataList);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
-//        File csvFile = new File("output.csv");
-//        try (PrintWriter writer = new PrintWriter(csvFile, StandardCharsets.UTF_8)) {
-//            writer.print(csv);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
 }

@@ -1,8 +1,9 @@
 public class Turno {
-    private int numInscritos;
     private String nome;
+    private int numInscritos;
 
-    public Turno(int numInscritos, String nome) {
+
+    public Turno(String nome, int numInscritos) {
         this.nome = nome;
         this.numInscritos = numInscritos;
     }
