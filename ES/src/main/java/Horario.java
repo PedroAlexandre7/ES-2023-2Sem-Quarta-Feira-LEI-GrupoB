@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -10,9 +11,6 @@ import java.util.List;
 
 
 public class Horario {
-    public List<Aula> getAulas() {
-        return aulas;
-    }
 
     private List<Aula> aulas;
 
@@ -22,6 +20,10 @@ public class Horario {
 
     public Horario() {
         this.aulas = new ArrayList<>();
+    }
+
+    public List<Aula> getAulas() {
+        return aulas;
     }
 
     public void adicionarAula(Aula aula) {
@@ -61,10 +63,25 @@ public class Horario {
         }
     }
 
+    public void lerJSON(String caminhoArquivo){
+        File inputFile = new File(caminhoArquivo);
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>(){});
+            for (Map<String, String> row : data)
+                System.out.println((row.values().toArray(new String[0])));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public static void main(String[] args) {
         Horario h = new Horario();
-        h.lerCSV("input.csv");
-        System.out.println(h.getAulas());
+        h.lerJSON("input.json");
+        //System.out.println(h.getAulas());
     }
 
 }
