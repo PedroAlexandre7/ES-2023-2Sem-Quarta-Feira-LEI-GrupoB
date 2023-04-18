@@ -16,6 +16,7 @@ public class FileManager {
 
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     public static void main(String[] args) {
         Horario horario = new Horario();
 //        horario.lerCSV("ES/input.csv");
