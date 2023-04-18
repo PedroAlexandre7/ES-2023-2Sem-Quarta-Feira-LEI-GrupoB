@@ -14,7 +14,9 @@ public class GravarHorario {
             CsvMapper csvMapper = new CsvMapper();
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-
+            for (Aula a : h.getAulas()){
+                writer.writeNext({a.getCursos(),a.getUcs(),a.getTurno().getNome(),a.getTurmas(),a.getTurno().getNumInscritos()}));
+            }
         } catch (IOException e) {
             System.err.println("gravaEmCSV(h,caminhoDeOutput): Erro ao escrever no ficheiro");
         }
