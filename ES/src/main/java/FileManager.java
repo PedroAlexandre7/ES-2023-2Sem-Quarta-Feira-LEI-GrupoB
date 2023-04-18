@@ -17,12 +17,10 @@ public class FileManager {
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Horario horario = new Horario();
-//        horario.lerCSV("ES/input.csv");
-        DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' HH:mm:ss a");
-        System.out.println(horario.getAulas().get(1).horaInicio().format(FORMATTER));
-//        System.out.println(horario.getAulas().get(1).data().format(FORMATTER));
+        horario.lerCSV("ES/input.csv");
+        saveInJSON(horario,"output.json");
     }
 
     public static File convertCSVtoJSON(File inputFile, String outputFilePath) {
@@ -62,33 +60,32 @@ public class FileManager {
 
 
     static public void saveInJSON(Horario h, String outputFilePath) {
-        try {
+        List<Map<String, String>> data = new ArrayList<>();
 
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put();
-//            String json = jsonObject.toString(2);
-//            Files.write(Paths.get("output.json"), json.getBytes());
-            List<Map<String, String>> data = new ArrayList<>();
-
-            for (Aula a : h.getAulas()) {
-                HashMap<String, String> aulaData = new HashMap<>();
-                aulaData.put("Curso", listToString(a.cursos()));
-                aulaData.put("Unidade Curricular", a.uc());
-                aulaData.put("Turno", a.turno().nome());
-                aulaData.put("Turma", listToString(a.turmas()));
-                aulaData.put("Inscritos no turno", Integer.toString(a.turno().numInscritos()));
-                aulaData.put("Dia da semana", a.diaDaSemana());
-                aulaData.put("Hora início da aula", a.horaInicio().format(TIME_FORMATTER));
-                aulaData.put("Hora fim da aula", a.horaFim().format(TIME_FORMATTER));
+        for (Aula a : h.getAulas()) {
+            HashMap<String, String> aulaData = new HashMap<>();
+            aulaData.put("Curso", listToString(a.cursos()));
+            aulaData.put("Unidade Curricular", a.uc());
+            aulaData.put("Turno", a.turno().nome());
+            aulaData.put("Turma", listToString(a.turmas()));
+            aulaData.put("Inscritos no turno", Integer.toString(a.turno().numInscritos()));
+            aulaData.put("Dia da semana", a.diaDaSemana());
+            aulaData.put("Hora início da aula", a.horaInicio().format(TIME_FORMATTER));
+            aulaData.put("Hora fim da aula", a.horaFim().format(TIME_FORMATTER));
+            if (a.data() != null)
                 aulaData.put("Data da aula", a.data().format(DATE_FORMATTER));
-//                aulaData.put()
+            if (!a.sala().nome().isBlank())
+                aulaData.put("Sala atribuída à aula", a.sala().nome());
+            if (a.sala().lotacao() != 0)
+                aulaData.put("Lotação da sala", Integer.toString(a.sala().lotacao()));
+            data.add(aulaData);
+        }
 
-                data.add(aulaData);
-            }
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        File jsonFile = new File(outputFilePath);
 
-            File jsonFile = new File(outputFilePath);
-            ObjectMapper objectMapper = new ObjectMapper();
-//            String jsonString = objectMapper.writeValueAsString("");
+        try {
             objectMapper.writeValue(jsonFile, data);
         } catch (IOException e) {
             System.err.println("saveInJSON(h, outputFilePath): Erro ao escrever no ficheiro");
