@@ -23,7 +23,7 @@ class HorarioTest {
     void lerCSV() {
         Horario horario1 = new Horario();
         assertDoesNotThrow(() -> horario1.lerCSV(new File("").getAbsolutePath() + File.separator + "valid.csv"));
-        assertNotEquals(horario1.getAulas().size(), 0);
+        assertNotEquals(horario1.getAulas().size(), 0 );
         Horario horario2 = new Horario();
         assertDoesNotThrow(() -> horario1.lerCSV(new File("").getAbsolutePath() + File.separator + "empty.csv"));
         assertEquals(horario2.getAulas().size(), 0);
