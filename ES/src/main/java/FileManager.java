@@ -9,14 +9,16 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class FileManager {
 
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss");
     public static void main(String[] args) {
         Horario horario = new Horario();
         horario.lerCSV("ES/input.csv");
-        saveInJSON(horario, "output.json");
+        System.out.println(horario.getAulas().get(1).horaInicio().format(FORMATTER));
     }
 
     public static File convertCSVtoJSON(File inputFile, String outputFilePath) {
@@ -63,6 +65,7 @@ public class FileManager {
 //            String json = jsonObject.toString(2);
 //            Files.write(Paths.get("output.json"), json.getBytes());
             List<Map<String, String>> data = new ArrayList<>();
+
             for (Aula a : h.getAulas()) {
                 HashMap<String, String> aulaData = new HashMap<>();
                 aulaData.put("Curso", listToString(a.cursos()));
@@ -70,7 +73,11 @@ public class FileManager {
                 aulaData.put("Turno", a.turno().nome());
                 aulaData.put("Turma", listToString(a.turmas()));
                 aulaData.put("Inscritos no turno", Integer.toString(a.turno().numInscritos()));
-
+                aulaData.put("Dia da semana", a.diaDaSemana());
+                aulaData.put("Hora início da aula", a.horaInicio().format(FORMATTER));
+                aulaData.put("Hora fim da aula", a.horaFim().format(FORMATTER));
+                aulaData.put("Data da aula", a.data().format(FORMATTER));
+//                aulaData.put()
 
                 data.add(aulaData);
             }
