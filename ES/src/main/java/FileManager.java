@@ -14,7 +14,7 @@ import java.util.*;
 
 public class FileManager {
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss");
     public static void main(String[] args) {
         Horario horario = new Horario();
         horario.lerCSV("ES/input.csv");
@@ -75,7 +75,8 @@ public class FileManager {
                 aulaData.put("Inscritos no turno", Integer.toString(a.turno().numInscritos()));
                 aulaData.put("Dia da semana", a.diaDaSemana());
                 aulaData.put("Hora início da aula", a.horaInicio().format(FORMATTER));
-//                aulaData.put("Hora fim da aula", )
+                aulaData.put("Hora fim da aula", a.horaFim().format(FORMATTER));
+                aulaData.put("Data da aula", a.data().format(FORMATTER));
 
 
                 data.add(aulaData);
