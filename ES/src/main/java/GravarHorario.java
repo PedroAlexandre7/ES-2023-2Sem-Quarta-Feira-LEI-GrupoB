@@ -30,4 +30,13 @@ public class GravarHorario {
         }
     }
 
+    public void gravaEmJSON(Horario h, String caminhoDeOutput) {
+        try {
+            File jsonFile = new File(caminhoDeOutput);
+
+        } catch (Exception e) {
+            System.err.println("gravaEmJSON(h,caminhoDeOutput): Erro ao escrever no ficheiro");
+        }
+    }
+
 }
