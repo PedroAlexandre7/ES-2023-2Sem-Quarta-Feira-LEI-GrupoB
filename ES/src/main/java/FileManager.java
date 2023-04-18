@@ -77,13 +77,13 @@ public class FileManager {
         }
     }
 
-    static public void gravaEmJSON(Horario h, String caminhoDeOutput) {
+    static public void saveInJSON(Horario h, String outputFilePath) {
         try {
-            File jsonFile = new File(caminhoDeOutput);
+            File jsonFile = new File(outputFilePath);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(jsonFile, h);
         } catch (IOException e) {
-            System.err.println("gravaEmJSON(h,caminhoDeOutput): Erro ao escrever no ficheiro");
+            System.err.println("saveInJSON(h, outputFilePath): Erro ao escrever no ficheiro");
         }
     }
 
