@@ -38,5 +38,4 @@ public class GravarHorario {
             System.err.println("gravaEmJSON(h,caminhoDeOutput): Erro ao escrever no ficheiro");
         }
     }
-
 }
