@@ -57,7 +57,7 @@ public class Horario {
                 String[] campos = linha.split(";", -1);
 
                 List<String> cursos = Arrays.stream(campos[0].split(", ")).toList();
-                Turno turno = new Turno(campos[2],Integer.parseInt(campos[4]));
+                Turno turno = new Turno(campos[2], Integer.parseInt(campos[4]));
                 List<String> turmas = Arrays.stream(campos[3].split(", ")).toList();
                 LocalDate data = campos[8].isEmpty() ? null : LocalDate.parse(campos[8], DateTimeFormatter.ofPattern("dd/MM/yyyy")); // TODO Decidir se aula de horário sem data é para descartar ou não
                 String nomeSala = campos[9].isEmpty() ? "" : campos[9];
@@ -76,28 +76,25 @@ public class Horario {
     public void lerJSON(String caminhoArquivo) {
         ObjectMapper objectMapper = new ObjectMapper();
 
-            try {
-                File inputFile = new File(caminhoArquivo);
-                List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
-                });
-                for (Map<String, String> row : data) {
-                    List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
-                    Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
-                    List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate dataAula = row.get("Data da aula").isEmpty() ? LocalDate.now() : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                    String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
-                    int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
-                    Sala sala = new Sala(nomeSala, lotacaoSala);
-                    Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
-                    adicionarAula(aula);
-                }
-            } catch (IOException e) {
-                System.out.println("Erro ao ler arquivo JSON: " + e.getMessage());
+        try {
+            File inputFile = new File(caminhoArquivo);
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {});
+            for (Map<String, String> row : data) {
+                List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
+                Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
+                List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataAula = row.get("Data da aula").isEmpty() ? LocalDate.now() : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
+                int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
+                Sala sala = new Sala(nomeSala, lotacaoSala);
+                Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
+                adicionarAula(aula);
             }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler arquivo JSON: " + e.getMessage());
+        }
     }
-
-
 
 
 }
