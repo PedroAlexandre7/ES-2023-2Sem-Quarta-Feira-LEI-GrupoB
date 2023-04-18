@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class FileConverter {
+public class FileManager {
 
     public static void main(String[] args) {
         convertCSVtoJSON(new File("input.csv"), "output.json");
@@ -40,7 +40,8 @@ public class FileConverter {
         File csvFile = new File(outputFilePath);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>(){});
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
+            });
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             String[] headers = data.get(0).keySet().toArray(new String[0]);
@@ -52,6 +53,38 @@ public class FileConverter {
             e.printStackTrace();
         }
         return csvFile;
+    }
+
+    static public void gravaEmCSV(Horario h, String caminhoDeOutput) {
+        try {
+            File csvFile = new File(caminhoDeOutput);
+            //CsvMapper csvMapper = new CsvMapper();//comentei tal como tinhas feito Leo
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            for (Aula a : h.getAulas()) {
+                // TODO alterar os toStrings dos GETS
+                // TODO Desculpa ter metido isto em comentário mas a estrutura do horário mudou
+                // TODO btw acho q tem tá a ler isto é bue giro
+//                String[] rowData = { a.getCursos().toString(), a.getUcs().toString(), a.getTurno().getNome(),
+//                        a.getTurmas(),
+//                        Integer.toString(a.getTurno().getNumInscritos()), a.getData().getDayOfWeek().toString(),
+//                        a.getHoraInicio().toString(), a.getHoraFim().toString(), a.getData().toString(),
+//                        a.getSala().getNome(), Integer.toString(a.getSala().getLotacao()) };
+//                writer.writeNext(rowData);
+            }
+        } catch (IOException e) {
+            System.err.println("gravaEmCSV(h,caminhoDeOutput): Erro ao escrever no ficheiro");
+        }
+    }
+
+    static public void gravaEmJSON(Horario h, String caminhoDeOutput) {
+        try {
+            File jsonFile = new File(caminhoDeOutput);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(jsonFile, h);
+        } catch (IOException e) {
+            System.err.println("gravaEmJSON(h,caminhoDeOutput): Erro ao escrever no ficheiro");
+        }
     }
 
 
