@@ -68,8 +68,9 @@ public class Horario {
                 adicionarAula(aula);
 
             }
-        } catch (IOException e) {
-            System.out.println("Erro ao ler arquivo CSV: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro ao ler arquivo CSV: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -91,8 +92,9 @@ public class Horario {
                 Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
                 adicionarAula(aula);
             }
-        } catch (IOException e) {
-            System.out.println("Erro ao ler arquivo JSON: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro ao ler arquivo JSON: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

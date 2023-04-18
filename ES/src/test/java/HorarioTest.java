@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.time.format.DateTimeParseException;
+
 import static org.junit.jupiter.api.Assertions.*;
 class HorarioTest {
 
@@ -18,7 +21,8 @@ class HorarioTest {
     @Test
     void lerCSV() {
         Horario horario = new Horario();
-        horario.lerCSV("input.csv");
+        assertDoesNotThrow(() -> { horario.lerCSV(new File("").getAbsolutePath()+ File.separator + "invalid.csv");});
+        System.out.println(horario.getAulas());
     }
 
     @Test
