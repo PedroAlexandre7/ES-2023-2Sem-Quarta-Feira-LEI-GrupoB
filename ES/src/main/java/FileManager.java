@@ -77,7 +77,7 @@ public class FileManager {
                 aulaData.put("Hora início da aula", a.horaInicio().format(FORMATTER));
                 aulaData.put("Hora fim da aula", a.horaFim().format(FORMATTER));
                 aulaData.put("Data da aula", a.data().format(FORMATTER));
-
+//                aulaData.put()
 
                 data.add(aulaData);
             }
