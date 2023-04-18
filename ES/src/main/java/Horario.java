@@ -1,9 +1,7 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -33,11 +31,11 @@ public class Horario {
 //        aulas.remove(aula);
 //    }
 
-    public void lerCSV(String caminhoArquivo) {
+    public void lerCSV(String caminhoArquivo) throws Exception {
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
 
-            br.readLine(); //serve para descartar a primeira linha
+            br.readLine(); // serve para descartar a primeira linha
             String linha;
             while ((linha = br.readLine()) != null) {
 
@@ -55,13 +53,16 @@ public class Horario {
                 adicionarAula(aula);
 
             }
+        } catch (FileNotFoundException e) {
+            System.err.println("Ficheiro não encontrado: " + e.getMessage());
+            throw new FileNotFoundException(caminhoArquivo + " não é um caminho de ficheiro válido.");
         } catch (Exception e) {
-            System.err.println("Erro ao ler arquivo CSV: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Erro a ler ficheiro não encontrado: " + e.getMessage());
+            throw new Exception("Ficheiro com estrutura inválida.");
         }
     }
 
-    public void lerJSON(String caminhoArquivo) {
+    public void lerJSON(String caminhoArquivo) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -76,12 +77,15 @@ public class Horario {
                 String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
                 int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
                 Sala sala = new Sala(nomeSala, lotacaoSala);
-                Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, row.get("Dia da semana"),LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
+                Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, row.get("Dia da semana"), LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
                 adicionarAula(aula);
             }
+        } catch (FileNotFoundException e) {
+            System.err.println("Ficheiro não encontrado: " + e.getMessage());
+            throw new FileNotFoundException(caminhoArquivo + " não é um caminho de ficheiro válido.");
         } catch (Exception e) {
-            System.err.println("Erro ao ler arquivo JSON: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Erro a ler ficheiro não encontrado: " + e.getMessage());
+            throw new Exception("Ficheiro com estrutura inválida.");
         }
     }
 
