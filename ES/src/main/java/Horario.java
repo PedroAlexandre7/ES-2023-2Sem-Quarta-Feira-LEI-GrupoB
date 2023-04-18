@@ -31,11 +31,8 @@ public class Horario {
         //h.lerCSV("input.csv");
 
         h.lerJSON("input.json");
-        //System.out.println(h.getAulas());
+        System.out.println(h.getAulas());
     }
-
-
-
 
     public List<Aula> getAulas() {
         return aulas;
@@ -76,23 +73,6 @@ public class Horario {
         }
     }
 
-    /*public void lerJSON(String caminhoArquivo) {
-        File inputFile = new File(caminhoArquivo);
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
-            });
-            for (Map<String, String> row : data)
-                System.out.println((row.values().toArray(new String[0])));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-     */
-
     public void lerJSON(String caminhoArquivo) {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -105,8 +85,7 @@ public class Horario {
                     Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
                     List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate dataAula = LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
+                    LocalDate dataAula = row.get("Data da aula").isEmpty() ? LocalDate.now() : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                     String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
                     int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
                     Sala sala = new Sala(nomeSala, lotacaoSala);
@@ -121,4 +100,4 @@ public class Horario {
 
 
 
-        }
+}
