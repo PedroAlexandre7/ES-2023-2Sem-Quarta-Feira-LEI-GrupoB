@@ -17,6 +17,8 @@ class HorarioTest {
 
     @Test
     void lerCSV() {
+        Horario horario = new Horario();
+        horario.lerCSV("input.csv");
     }
 
     @Test
