@@ -1,9 +1,10 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.time.format.DateTimeParseException;
+import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 class HorarioTest {
 
     @Test
@@ -20,9 +21,14 @@ class HorarioTest {
 
     @Test
     void lerCSV() {
-        Horario horario = new Horario();
-        assertDoesNotThrow(() -> { horario.lerCSV(new File("").getAbsolutePath()+ File.separator + "invalid.csv");});
-        System.out.println(horario.getAulas());
+        Horario horario1 = new Horario();
+        assertDoesNotThrow(() -> horario1.lerCSV(new File("").getAbsolutePath() + File.separator + "valid.csv"));
+        assertNotEquals(horario1.getAulas().size(), 0);
+        Horario horario2 = new Horario();
+        assertDoesNotThrow(() -> horario1.lerCSV(new File("").getAbsolutePath() + File.separator + "empty.csv"));
+        assertEquals(horario2.getAulas().size(), 0);
+        Horario horario3 = new Horario();
+        assertThrowsExactly(FileNotFoundException.class, () -> horario3.lerCSV(new File("").getAbsolutePath() + File.separator + "invalid.csv"));
     }
 
     @Test

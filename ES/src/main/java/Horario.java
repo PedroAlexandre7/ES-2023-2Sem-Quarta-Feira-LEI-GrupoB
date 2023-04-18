@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,22 +15,10 @@ import java.util.Map;
 
 public class Horario {
 
-    private List<Aula> aulas;
-
-    public Horario(List<Aula> aulas) {
-        this.aulas = aulas;
-    }
+    private final List<Aula> aulas;
 
     public Horario() {
         this.aulas = new ArrayList<>();
-    }
-
-    public static void main(String[] args) {
-        Horario h = new Horario();
-        //h.lerCSV("input.csv");
-
-        h.lerJSON("input.json");
-        System.out.println(h.getAulas());
     }
 
     public List<Aula> getAulas() {
@@ -42,9 +29,9 @@ public class Horario {
         aulas.add(aula);
     }
 
-    public void removerAula(Aula aula) {
-        aulas.remove(aula);
-    }
+//    public void removerAula(Aula aula) {
+//        aulas.remove(aula);
+//    }
 
     public void lerCSV(String caminhoArquivo) {
 
@@ -64,7 +51,7 @@ public class Horario {
                 int lotacaoSala = campos[10].isEmpty() ? 0 : Integer.parseInt(campos[10]);
                 Sala sala = new Sala(nomeSala, lotacaoSala);
 
-                Aula aula = new Aula(cursos, campos[1], turno, turmas, LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
+                Aula aula = new Aula(cursos, campos[1], turno, turmas, campos[5], LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
                 adicionarAula(aula);
 
             }
@@ -79,17 +66,17 @@ public class Horario {
 
         try {
             File inputFile = new File(caminhoArquivo);
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
+            });
             for (Map<String, String> row : data) {
                 List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
                 Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
                 List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate dataAula = row.get("Data da aula").isEmpty() ? LocalDate.now() : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                LocalDate dataAula = row.get("Data da aula").isEmpty() ? null : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
                 int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
                 Sala sala = new Sala(nomeSala, lotacaoSala);
-                Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
+                Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, row.get("Dia da semana"),LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
                 adicionarAula(aula);
             }
         } catch (Exception e) {
