@@ -21,14 +21,6 @@ public class Horario {
         this.aulas = new ArrayList<>();
     }
 
-    public static void main(String[] args) {
-        Horario h = new Horario();
-        //h.lerCSV("input.csv");
-
-        h.lerJSON("input.json");
-        System.out.println(h.getAulas());
-    }
-
     public List<Aula> getAulas() {
         return aulas;
     }
@@ -74,7 +66,8 @@ public class Horario {
 
         try {
             File inputFile = new File(caminhoArquivo);
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
+            });
             for (Map<String, String> row : data) {
                 List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
                 Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));

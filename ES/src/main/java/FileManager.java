@@ -58,7 +58,6 @@ public class FileManager {
     }
 
 
-
     static public void saveInJSON(Horario h, String outputFilePath) {
         try {
 
