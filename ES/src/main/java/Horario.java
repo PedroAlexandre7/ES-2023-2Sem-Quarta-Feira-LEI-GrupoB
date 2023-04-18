@@ -10,6 +10,10 @@ import java.util.List;
 
 
 public class Horario {
+    public List<Aula> getAulas() {
+        return aulas;
+    }
+
     private List<Aula> aulas;
 
     public Horario(List<Aula> aulas) {
@@ -18,11 +22,6 @@ public class Horario {
 
     public Horario() {
         this.aulas = new ArrayList<>();
-    }
-
-    public static void main(String[] args) {
-        Horario h = new Horario();
-        h.lerCSV("C:/Users/tiago/IdeaProjects/LEI4-GrupoB/input.csv");
     }
 
     public void adicionarAula(Aula aula) {
@@ -49,8 +48,8 @@ public class Horario {
 
                 Turno turno = new Turno(Integer.parseInt(campos[4]), campos[2]);
                 LocalDate data = campos[8].isEmpty() ? null : LocalDate.parse(campos[8], DateTimeFormatter.ofPattern("dd/MM/yyyy")); // TODO Decidir se aula de horário sem data é para descartar ou não
-                String nomeSala = campos[9].isEmpty() ? campos[9] : "";
-                int lotacaoSala = campos[10].isEmpty() ? Integer.parseInt(campos[10]) : 0;
+                String nomeSala = campos[9].isEmpty() ? "" : campos[9];
+                int lotacaoSala = campos[10].isEmpty() ? 0 : Integer.parseInt(campos[10]);
                 Sala sala = new Sala(nomeSala, lotacaoSala);
 
                 Aula aula = new Aula(cursos, ucs, turno, campos[3], LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
@@ -60,6 +59,12 @@ public class Horario {
         } catch (IOException e) {
             System.out.println("Erro ao ler arquivo CSV: " + e.getMessage());
         }
+    }
+
+    public static void main(String[] args) {
+        Horario h = new Horario();
+        h.lerCSV("input.csv");
+        System.out.println(h.getAulas());
     }
 
 }
