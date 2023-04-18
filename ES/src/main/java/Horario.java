@@ -51,7 +51,7 @@ public class Horario {
                 int lotacaoSala = campos[10].isEmpty() ? 0 : Integer.parseInt(campos[10]);
                 Sala sala = new Sala(nomeSala, lotacaoSala);
 
-                Aula aula = new Aula(cursos, campos[1], turno, turmas, LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
+                Aula aula = new Aula(cursos, campos[1], turno, turmas, campos[5], LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
                 adicionarAula(aula);
 
             }
@@ -76,7 +76,7 @@ public class Horario {
                 String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
                 int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
                 Sala sala = new Sala(nomeSala, lotacaoSala);
-                Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
+                Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, row.get("Dia da semana"),LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
                 adicionarAula(aula);
             }
         } catch (Exception e) {
