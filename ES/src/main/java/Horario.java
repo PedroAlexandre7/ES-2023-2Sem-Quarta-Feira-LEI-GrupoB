@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 public class Horario {
     private List<Aula> aulas;
@@ -35,24 +37,23 @@ public class Horario {
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
 
-            br.readLine(); // serve para descartar a primeira linha
+            br.readLine(); //serve para descartar a primeira linha
             String linha;
             while ((linha = br.readLine()) != null) {
 
                 String[] campos = linha.split(";", -1);
 
+                List<String> cursos = Arrays.stream(campos[0].split(", ")).toList();
+
+                List<String> ucs = Arrays.stream(campos[1].split(", ")).toList();
+
                 Turno turno = new Turno(Integer.parseInt(campos[4]), campos[2]);
-                LocalDate data = campos[8].isEmpty() ? null
-                        : LocalDate.parse(campos[8], DateTimeFormatter.ofPattern("dd/MM/yyyy")); // TODO Decidir se aula
-                                                                                                 // de horário sem data
-                                                                                                 // é para descartar ou
-                                                                                                 // não
+                LocalDate data = campos[8].isEmpty() ? null : LocalDate.parse(campos[8], DateTimeFormatter.ofPattern("dd/MM/yyyy")); // TODO Decidir se aula de horário sem data é para descartar ou não
                 String nomeSala = campos[9].isEmpty() ? campos[9] : "";
                 int lotacaoSala = campos[10].isEmpty() ? Integer.parseInt(campos[10]) : 0;
                 Sala sala = new Sala(nomeSala, lotacaoSala);
 
-                Aula aula = new Aula(campos[0], campos[1], turno, campos[3], LocalTime.parse(campos[6]),
-                        LocalTime.parse(campos[7]), sala, data);
+                Aula aula = new Aula(cursos, ucs, turno, campos[3], LocalTime.parse(campos[6]), LocalTime.parse(campos[7]), sala, data);
                 adicionarAula(aula);
 
             }
