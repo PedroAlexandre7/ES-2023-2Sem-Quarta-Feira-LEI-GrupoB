@@ -31,15 +31,12 @@ public class Horario {
 //        aulas.remove(aula);
 //    }
 
-    public void lerCSV(String caminhoArquivo) throws Exception {
-        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+    public void lerCSV(File ficheiro) throws Exception {
+        try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
             br.readLine(); // serve para descartar a primeira linha
             String linha;
             while ((linha = br.readLine()) != null)
                 criarAulaCSV(linha);
-        } catch (FileNotFoundException e) {
-            System.err.println("Ficheiro CSV não encontrado: " + e.getMessage());
-            throw new FileNotFoundException(caminhoArquivo + " não é um caminho de ficheiro válido.");
         } catch (Exception e) {
             System.err.println("Erro a ler ficheiro não encontrado: " + e.getMessage());
             throw new Exception("Ficheiro CSV com estrutura inválida.");
@@ -59,16 +56,12 @@ public class Horario {
         adicionarAula(aula);
     }
 
-    public void lerJSON(String caminhoArquivo) throws Exception {
+    public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            File inputFile = new File(caminhoArquivo);
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {});
             for (Map<String, String> row : data)
                 criarAulaJSON(row);
-        } catch (FileNotFoundException e) {
-            System.err.println("Ficheiro JSON não encontrado: " + e.getMessage());
-            throw new FileNotFoundException(caminhoArquivo + " não é um caminho de ficheiro válido.");
         } catch (Exception e) {
             System.err.println("Erro a ler ficheiro não encontrado: " + e.getMessage());
             throw new Exception("Ficheiro JSON com estrutura inválida.");

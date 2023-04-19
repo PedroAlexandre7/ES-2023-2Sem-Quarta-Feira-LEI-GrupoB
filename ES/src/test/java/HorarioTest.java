@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,9 +40,9 @@ class HorarioTest {
     private static void testValidSchedule(String filename) {
         Horario horario = new Horario();
         if (filename.endsWith(".csv"))
-            assertDoesNotThrow(() -> horario.lerCSV(new File("").getAbsolutePath() + File.separator + filename));
+            assertDoesNotThrow(() -> horario.lerCSV(new File(new File("").getAbsolutePath() + File.separator + filename)));
         else
-            assertDoesNotThrow(() -> horario.lerJSON(new File("").getAbsolutePath() + File.separator + filename));
+            assertDoesNotThrow(() -> horario.lerJSON(new File(new File("").getAbsolutePath() + File.separator + filename)));
         Aula aulanumero8 = horario.getAulas().get(6);
         Aula aulanumero9 = horario.getAulas().get(7);
         assertAll(() -> assertEquals("ME", aulanumero8.cursos().get(0)), () -> assertEquals("LEI", aulanumero8.cursos().get(1)),
@@ -59,21 +58,19 @@ class HorarioTest {
 
     private static void testInvalidShedule(String filename) {
         Horario horario = new Horario();
-        if (filename.endsWith(".csv")) {
-            assertThrowsExactly(FileNotFoundException.class, () -> horario.lerCSV(new File("").getAbsolutePath() + File.separator + ""));
-            assertThrows(Exception.class, () -> horario.lerCSV(new File("").getAbsolutePath() + File.separator + filename));
-        } else {
-            assertThrowsExactly(FileNotFoundException.class, () -> horario.lerJSON(new File("").getAbsolutePath() + File.separator + ""));
-            assertThrows(Exception.class, () -> horario.lerJSON(new File("").getAbsolutePath() + File.separator + filename));
-        }
+        if (filename.endsWith(".csv"))
+            assertThrows(Exception.class, () -> horario.lerCSV(new File(new File("").getAbsolutePath() + File.separator + filename)));
+         else
+            assertThrows(Exception.class, () -> horario.lerJSON(new File(new File("").getAbsolutePath() + File.separator + filename)));
+
     }
 
     private static void testEmptySchedule(String filename) {
         Horario horario = new Horario();
         if (filename.endsWith(".csv"))
-            assertDoesNotThrow(() -> horario.lerCSV(new File("").getAbsolutePath() + File.separator + filename));
+            assertDoesNotThrow(() -> horario.lerCSV(new File( new File("").getAbsolutePath() + File.separator + filename)));
         else
-            assertDoesNotThrow(() -> horario.lerCSV(new File("").getAbsolutePath() + File.separator + filename));
+            assertDoesNotThrow(() -> horario.lerCSV(new File( new File("").getAbsolutePath() + File.separator + filename)));
         assertEquals(horario.getAulas().size(), 0);
     }
 }
