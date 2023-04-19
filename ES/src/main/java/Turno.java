@@ -5,5 +5,4 @@ public record Turno(String nome, int numInscritos) {
         return nome + " | " + numInscritos + " inscritos";
     }
 
-
 }
