@@ -89,6 +89,27 @@ public class FileManager {
         }
     }
 
+    static public void saveInCSV(Horario h, String caminhoDeOutput) {
+        try {
+            File csvFile = new File(caminhoDeOutput); // Cria um ficheiro CSV
+            // Cria um género de printwriter para escrever
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            for (Aula a : h.getAulas()) {
+                String[] rowData = { listToString(a.cursos()), a.uc(), a.turno().nome(), listToString(a.turmas()),
+                        Integer.toString(a.turno().numInscritos()), a.data().getDayOfWeek().toString(),
+                        a.horaInicio().format(TIME_FORMATTER), a.horaFim().format(TIME_FORMATTER),
+                        a.data().format(DATE_FORMATTER),
+                        a.sala().nome(),
+                        Integer.toString(a.sala().lotacao()) };
+                writer.writeNext(rowData);
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.err.println("gravaEmCSV(h,caminhoDeOutput): Erro ao escrever no ficheiro");
+        }
+    }
+
     private static String listToString(List<String> list) {
         if (list.size() == 0)
             return "";
