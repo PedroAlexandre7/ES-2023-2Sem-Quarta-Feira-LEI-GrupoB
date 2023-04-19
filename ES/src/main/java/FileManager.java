@@ -108,6 +108,7 @@ public class FileManager {
                         Integer.toString(a.sala().lotacao()) };
                 writer.writeNext(rowData);
             }
+            writer.close();
         } catch (IOException e) {
             System.err.println("gravaEmCSV(h,caminhoDeOutput): Erro ao escrever no ficheiro");
         }
