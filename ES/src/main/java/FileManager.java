@@ -19,7 +19,7 @@ public class FileManager {
 
     public static void main(String[] args) throws Exception {
         Horario horario = new Horario();
-        horario.lerCSV("ES/input.csv");
+        horario.lerCSV(new File("ES/input.csv"));
         saveInJSON(horario,"output.json");
     }
 
