@@ -38,8 +38,7 @@ public class Horario {
             while ((linha = br.readLine()) != null)
                 criarAulaCSV(linha);
         } catch (Exception e) {
-            System.err.println("Erro a ler ficheiro não encontrado: " + e.getMessage());
-            throw new Exception("Ficheiro CSV com estrutura inválida.");
+            throw new Exception("Erro a ler ficheiro CSV" + ficheiro.getName() + " " + e.getMessage());
         }
     }
 
@@ -63,8 +62,7 @@ public class Horario {
             for (Map<String, String> row : data)
                 criarAulaJSON(row);
         } catch (Exception e) {
-            System.err.println("Erro a ler ficheiro não encontrado: " + e.getMessage());
-            throw new Exception("Ficheiro JSON com estrutura inválida.");
+            throw new Exception("Erro a ler ficheiro JSON" + ficheiro.getName() + " " + e.getMessage());
         }
     }
 
