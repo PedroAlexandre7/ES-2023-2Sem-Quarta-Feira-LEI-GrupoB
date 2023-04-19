@@ -44,7 +44,7 @@ public class FileManager {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {});
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             String[] headers = data.get(0).keySet().toArray(new String[0]);
             writer.writeNext(headers);
