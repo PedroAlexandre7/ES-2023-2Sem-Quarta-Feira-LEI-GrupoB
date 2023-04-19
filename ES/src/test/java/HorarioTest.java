@@ -71,6 +71,6 @@ class HorarioTest {
             assertDoesNotThrow(() -> horario.lerCSV(new File( new File("").getAbsolutePath() + File.separator + filename)));
         else
             assertDoesNotThrow(() -> horario.lerCSV(new File( new File("").getAbsolutePath() + File.separator + filename)));
-        assertEquals(horario.getAulas().size(), 0);
+        assertEquals(0, horario.getAulas().size());
     }
 }
