@@ -21,7 +21,7 @@ public class FileManager {
         //Horario horario = new Horario();
         //horario.lerCSV(new File("ES/input.csv"));
         //saveInJSON(horario,"output.json");
-        convertJSONtoCSV(new File("C:\\Users\\aguas\\Desktop\\ISCTE\\3ºAno\\2Semestre\\ES\\LEI4-GrupoB\\ES\\validtest.json"),"output.csv");
+        convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "validtest.json"),"output.csv");
     }
 
     public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
