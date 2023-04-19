@@ -21,7 +21,7 @@ public class FileManager {
         //Horario horario = new Horario();
         //horario.lerCSV(new File("ES/input.csv"));
         //saveInJSON(horario,"output.json");
-        convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "validtest.json"),"output.csv");
+        convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "ES/validtest.json"),"output.csv");
     }
 
     public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
@@ -50,6 +50,7 @@ public class FileManager {
             writer.writeNext(headers);
             for (Map<String, String> row : data)
                 writer.writeNext(row.values().toArray(new String[0]));
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
