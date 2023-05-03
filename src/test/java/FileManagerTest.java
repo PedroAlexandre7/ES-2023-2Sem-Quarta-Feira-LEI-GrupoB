@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,5 +39,11 @@ class FileManagerTest {
         }
         assertEquals(expectedLines, actualLines);
         assertThrows(Exception.class, () -> FileManager.convertJSONtoCSV(null,"error"));
+    }
+
+    @Test
+    void saveInCSV(){
+        //1º Ler um ficheiro
+        //FileManager.saveInCSV(new Horario(Horario.lerCSV(new File("input.csv")));, "savedInCSV");
     }
 }
