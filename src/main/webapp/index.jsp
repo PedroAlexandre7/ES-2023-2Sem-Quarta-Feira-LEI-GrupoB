@@ -17,7 +17,6 @@
            var calendar = new FullCalendar.Calendar(calendarEl, {
                initialView: 'dayGridMonth'
            });
-           console.log('FullCalendar initialized!');
            calendar.render();
        });
    </script>
