@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,11 @@ public class Server extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Crie a agenda e adicione algumas aulas
         Horario horario = new Horario();
+        try {
+            horario.lerCSV(new File("input.csv"));
+        } catch (Exception e) {
+            System.out.println("Erro ao ler o ficheiro");
+        }
         //horario.adicionarAula(new Aula("Matemática", "João", "08:00", "10:00"));
         //horario.adicionarAula(new Aula("História", "Maria", "10:00", "12:00"));
 

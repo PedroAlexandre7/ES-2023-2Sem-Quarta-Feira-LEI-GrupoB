@@ -18,16 +18,16 @@
    <table>
       <tr>
          <th>Nome</th>
-         <th>Professor</th>
+         <th>Sala</th>
          <th>Início</th>
          <th>Fim</th>
       </tr>
-      <% for (Aula aula : agenda.getAulas()) { %>
+      <% for (Aula aula : horario.getAulas()) { %>
       <tr>
-         <td><%= aula.getNome() %></td>
-         <td><%= aula.getProfessor() %></td>
-         <td><%= aula.getInicio() %></td>
-         <td><%= aula.getFim() %></td>
+         <td><%= aula.uc() %></td>
+         <td><%= aula.sala() %></td>
+         <td><%= aula.horaInicio() %></td>
+         <td><%= aula.horaFim() %></td>
       </tr>
       <% } %>
    </table>
