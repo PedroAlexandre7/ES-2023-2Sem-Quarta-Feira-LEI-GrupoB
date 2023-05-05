@@ -5,31 +5,21 @@
 <head>
    <title>Minha Agenda</title>
    <meta charset="UTF-8">
-   <style>
-      table, th, td {
-         border: 1px solid black;
-         border-collapse: collapse;
-         padding: 10px;
-      }
-   </style>
+   <link href="https://cdn.jsdelivr.net/webjars/org.webjars/fullcalendar/5.11.3/main.css" rel="stylesheet" />
 </head>
 <body>
    <h1>Minha Agenda</h1>
-   <table>
-      <tr>
-         <th>Nome</th>
-         <th>Sala</th>
-         <th>Início</th>
-         <th>Fim</th>
-      </tr>
-      <% for (Aula aula : horario.getAulas()) { %>
-                  <tr>
-                     <td><%= aula.uc() %></td>
-                     <td><%= aula.sala() %></td>
-                     <td><%= aula.horaInicio() %></td>
-                     <td><%= aula.horaFim() %></td>
-                  </tr>
-      <% } %>
-   </table>
+   <div id="calendar" style=" height:500px";></div>
+   <script src="https://cdn.jsdelivr.net/webjars/org.webjars/fullcalendar/5.11.3/main.js"></script>
+   <script>
+       document.addEventListener('DOMContentLoaded', function() {
+           var calendarEl = document.getElementById('calendar');
+           var calendar = new FullCalendar.Calendar(calendarEl, {
+               initialView: 'dayGridMonth'
+           });
+           console.log('FullCalendar initialized!');
+           calendar.render();
+       });
+   </script>
 </body>
 </html>
