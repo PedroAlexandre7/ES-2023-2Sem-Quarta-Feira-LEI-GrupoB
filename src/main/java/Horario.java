@@ -89,5 +89,14 @@ public class Horario {
         }
     }
 
+    private void checkForOverbooking(){
+        for(Aula a : aulas){
+            int totalInscritos = a.turno().numInscritos();
+            if(a.sala().lotacao()<totalInscritos){
+                System.err.println("Há sobrelotação na aula: " + a);
+            }
+        }
+    }
+
 
 }
