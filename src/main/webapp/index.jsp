@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="Horario"%>
+<%@ page import="calendarApp.Horario"%>
+<%@ page import="calendarApp.Aula"%>
 <%@ page import="java.io.*"%>
 <!DOCTYPE html>
 <html>
@@ -12,15 +13,7 @@
 <body>
    <h1>Minha Agenda</h1>
    <input type="file" id="fileInput">
-   <%
-        String fileName = request.getParameter("fileInput");
-        if (fileName != null && !fileName.isEmpty()) {
-            Horario horario = new Horario();
-            horario.lerCSV(new File(fileName));
-        } else {
-            out.println("Please select a file to upload.");
-        }
-  %>
+   <button id="processButton">Process File</button>
    <div id="calendar" style=" height:500px";></div>
    <script src="https://cdn.jsdelivr.net/webjars/org.webjars/fullcalendar/5.11.3/main.js"></script>
    <script>
@@ -32,7 +25,28 @@
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
-               }
+           });
+           calendar.render();
+
+           calendar.addevent: [
+                    <% String fileName = request.getParameter("fileInput");
+                        Horario horario = new Horario();
+                        if (fileName != null && !fileName.isEmpty()) {
+
+                            horario.lerCSV(new File(fileName));
+                        } else {
+                            out.println("Please select a file to upload.");
+                        }
+                        for (Aula aula : horario.getAulas()) { %>
+                        {
+                            title: '<%= aula.uc()%>',
+                            startTime: '<%= aula.horaInicio()%>',
+                            endTime: '<%= aula.horaFim()%>',
+                            daysOfWeek: [<%= aula.diaDaSemana() %>],
+                            location: '<%= aula.sala()%>'
+                        },
+                    <% } %>
+               ]
            });
            calendar.render();
        });
