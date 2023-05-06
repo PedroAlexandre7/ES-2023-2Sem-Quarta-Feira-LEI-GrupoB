@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.java.Horario"%>
+<%@ page import="Horario"%>
 <%@ page import="java.io.*"%>
 <!DOCTYPE html>
 <html>

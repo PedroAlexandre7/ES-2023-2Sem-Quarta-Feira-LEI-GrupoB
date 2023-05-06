@@ -1,3 +1,5 @@
+package calendarApp;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,7 +29,7 @@ public class Horario {
         aulas.add(aula);
     }
 
-//    public void removerAula(Aula aula) {
+//    public void removerAula(calendarApp.Aula aula) {
 //        aulas.remove(aula);
 //    }
 
@@ -68,10 +70,10 @@ public class Horario {
 
     private void criarAulaJSON(Map<String, String> row) {
         List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
-        Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
+        Turno turno = new Turno(row.get("calendarApp.Turno"), Integer.parseInt(row.get("Inscritos no turno")));
         List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
         LocalDate dataAula = row.get("Data da aula").isEmpty() ? null : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
+        String nomeSala = row.get("calendarApp.Sala atribuída à aula").isEmpty() ? "" : row.get("calendarApp.Sala atribuída à aula");
         int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
         Sala sala = new Sala(nomeSala, lotacaoSala);
         Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, row.get("Dia da semana"), LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);

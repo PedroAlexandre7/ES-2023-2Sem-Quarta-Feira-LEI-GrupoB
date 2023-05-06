@@ -1,3 +1,5 @@
+package calendarApp;
+
 public record Turno(String nome, int numInscritos) {
 
     @Override

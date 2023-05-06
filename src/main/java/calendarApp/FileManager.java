@@ -1,3 +1,5 @@
+package calendarApp;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +20,7 @@ public class FileManager {
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void main(String[] args) throws Exception {
-        //Horario horario = new Horario();
+        //calendarApp.Horario horario = new calendarApp.Horario();
         //horario.lerCSV(new File("ES/input.csv"));
         //saveInJSON(horario,"output.json");
         convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "ES/validtest.json"),"output.csv");
@@ -64,7 +66,7 @@ public class FileManager {
             HashMap<String, String> aulaData = new HashMap<>();
             aulaData.put("Curso", listToString(a.cursos()));
             aulaData.put("Unidade Curricular", a.uc());
-            aulaData.put("Turno", a.turno().nome());
+            aulaData.put("calendarApp.Turno", a.turno().nome());
             aulaData.put("Turma", listToString(a.turmas()));
             aulaData.put("Inscritos no turno", Integer.toString(a.turno().numInscritos()));
             aulaData.put("Dia da semana", a.diaDaSemana());
@@ -73,7 +75,7 @@ public class FileManager {
             if (a.data() != null)
                 aulaData.put("Data da aula", a.data().format(DATE_FORMATTER));
             if (!a.sala().nome().isBlank())
-                aulaData.put("Sala atribuída à aula", a.sala().nome());
+                aulaData.put("calendarApp.Sala atribuída à aula", a.sala().nome());
             if (a.sala().lotacao() != 0)
                 aulaData.put("Lotação da sala", Integer.toString(a.sala().lotacao()));
             data.add(aulaData);
