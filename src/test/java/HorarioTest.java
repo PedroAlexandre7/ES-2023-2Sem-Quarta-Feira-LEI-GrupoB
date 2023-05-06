@@ -1,6 +1,7 @@
 import calendarApp.FileManager;
 import calendarApp.Horario;
 import org.junit.jupiter.api.Test;
+import calendarApp.Aula;
 
 import java.io.File;
 
