@@ -94,5 +94,24 @@ public class Horario {
     //}
 
 
+    //horario.getAulas() e para cada Aula, fazer aula.getUc(). Adicionar cada uc a uma lista, sem repetiçoes
+    // Lista de ucs aparece na página Criar horário
+    // utilizador este ucs --- getUcsEscolhidas
+    // criarHorario com getUcsEscolhidas
+
+    //ucs que aparecem em Criar Horario
+
+
+    public Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
+        Horario horarioCriado = new Horario();
+        for (Aula aula : horario.getAulas()){
+            if(ucsEscolhidas.contains(aula.uc())){
+                horarioCriado.adicionarAula(aula);
+            }
+        }
+        return horarioCriado;
+    }
+
+
 
 }
