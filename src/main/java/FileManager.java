@@ -18,12 +18,13 @@ public class FileManager {
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void main(String[] args) throws Exception {
-        Horario horario = new Horario();
-        horario.lerCSV(new File("ES/input.csv"));
-        saveInJSON(horario, "output.json");
+        //Horario horario = new Horario();
+        //horario.lerCSV(new File("ES/input.csv"));
+        //saveInJSON(horario,"output.json");
+        convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "ES/validtest.json"),"output.csv");
     }
 
-    public static File convertCSVtoJSON(File inputFile, String outputFilePath) {
+    public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
 
         File jsonFile = new File(outputFilePath);
         CsvMapper csvMapper = new CsvMapper();
@@ -31,34 +32,30 @@ public class FileManager {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        try (MappingIterator<Object> mappingIterator = csvMapper.readerFor(Map.class).with(csvSchema)
-                .readValues(inputFile)) {
+        try (MappingIterator<Object> mappingIterator = csvMapper.readerFor(Map.class).with(csvSchema).readValues(inputFile)) {
             objectMapper.writeValue(jsonFile, mappingIterator.readAll());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return jsonFile;
     }
 
-    public static File convertJSONtoCSV(File inputFile, String outputFilePath) {
+    public static void convertJSONtoCSV(File inputFile, String outputFilePath) {
         File csvFile = new File(outputFilePath);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
-            });
-            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ',', CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {});
+            CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             String[] headers = data.get(0).keySet().toArray(new String[0]);
             writer.writeNext(headers);
             for (Map<String, String> row : data)
                 writer.writeNext(row.values().toArray(new String[0]));
-
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return csvFile;
     }
+
 
     static public void saveInJSON(Horario h, String outputFilePath) {
         List<Map<String, String>> data = new ArrayList<>();
