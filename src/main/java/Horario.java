@@ -79,4 +79,15 @@ public class Horario {
     }
 
 
+    //TODO falta validar se uma começa enquanto a outra está a decorrer
+    private void checkForColisions(){
+        for(Aula a : aulas){
+            for(Aula b : aulas){
+                if(!a.equals(b)&& a.diaDaSemana()==b.diaDaSemana() &&a.data()==b.data() && a.sala()==b.sala() && a.horaInicio()==b.horaInicio())
+                    System.err.println("Foi encontrada uma colisão na aula: " +a+ " com a aula: " +b);
+            }
+        }
+    }
+
+
 }
