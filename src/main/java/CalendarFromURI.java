@@ -14,6 +14,10 @@ import java.util.ArrayList;
 
 public class CalendarFromURI {
 
+    private CalendarFromURI(){
+
+    }
+
     public static Calendar getCalendar(String uri) {
 
         try {
