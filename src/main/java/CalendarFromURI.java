@@ -26,7 +26,7 @@ public class CalendarFromURI {
             CalendarBuilder calendarBuilder = new CalendarBuilder();
             return calendarBuilder.build(url.openStream());
         } catch (URISyntaxException | IOException | ParserException e) {
-            System.err.println("There was a problem getting the calendar from the URI: " + e.getMessage());
+            System.err.println("There was a problem getting the calendar from the URI. " + e.getMessage());
             return null;
         }
 
@@ -37,7 +37,6 @@ public class CalendarFromURI {
         for (CalendarComponent calendarComponent : calendar.getComponents()) {
             Object[] properties = calendarComponent.getProperties().toArray();
             String[] descriptionProperties = properties[5].toString().split("\\\\n");
-
             String uc = descriptionProperties[1].replaceFirst("Unidade de execução: ", "");
             Turno turno = new Turno(descriptionProperties[3].replaceFirst("Turno: ", ""), 0);
             String[] dataHoraInicio = descriptionProperties[4].replaceFirst("Início: ", "").split(" ");
