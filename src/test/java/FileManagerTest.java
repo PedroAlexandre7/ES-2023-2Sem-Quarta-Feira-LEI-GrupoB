@@ -56,11 +56,11 @@ class FileManagerTest {
 //    }
     @Test
     void convertJSONtoCSV() {
-        FileManager.convertJSONtoCSV(new File("./src/test/validtest.json"), "output.csv");
+        FileManager.convertJSONtoCSV(new File("validtest.json"), "output.csv");
         List<String> expectedLines;
         List<String> actualLines;
         try {
-            expectedLines = Files.readAllLines(Path.of("./src/test/validtest.csv"), StandardCharsets.UTF_8);
+            expectedLines = Files.readAllLines(Path.of("validtest.csv"), StandardCharsets.UTF_8);
             actualLines = Files.readAllLines(Path.of("output.csv"), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -76,7 +76,7 @@ class FileManagerTest {
     }
 
     @Test
-    void saveInJSON() {
+    void saveInJSONTest() {
         Horario horario = new Horario();
         try {
             horario.lerJSON(new File("validtest.json"));
@@ -84,14 +84,15 @@ class FileManagerTest {
             throw new RuntimeException(e);
         }
         FileManager.saveInJSON(horario, "output.json");
-        List<String> expectedLines;
-        List<String> actualLines;
+        Horario horarioSalvo = new Horario();
         try {
-            expectedLines = Files.readAllLines(Path.of("validtest.json"), StandardCharsets.UTF_8);
-            actualLines = Files.readAllLines(Path.of("output.json"), StandardCharsets.UTF_8);
-        } catch (IOException e) {
+            horarioSalvo.lerJSON(new File("output.json"));
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        assertEquals(expectedLines, actualLines);
+        assertEquals(horario.getAulas(), horarioSalvo.getAulas());
+        assertThrows(NullPointerException.class, () -> FileManager.saveInJSON(null, "error"));
     }
+
+
 }

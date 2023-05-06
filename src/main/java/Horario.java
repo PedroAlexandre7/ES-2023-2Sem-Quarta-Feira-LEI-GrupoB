@@ -58,7 +58,8 @@ public class Horario {
     public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {
+            });
             for (Map<String, String> row : data)
                 criarAulaJSON(row);
         } catch (Exception e) {
@@ -87,10 +88,10 @@ public class Horario {
 
 
     //public Horario criarHorario(Horario horario){
-        //Horario horarioCriado = new Horario();
-        //for (Aula aula : horario.getAulas()){
+    //Horario horarioCriado = new Horario();
+    //for (Aula aula : horario.getAulas()){
 
-        //}
+    //}
     //}
 
 
@@ -102,16 +103,15 @@ public class Horario {
     //ucs que aparecem em Criar Horario
 
 
-    public Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
+    public Horario criarHorario(Horario horario, List<String> ucsEscolhidas) {
         Horario horarioCriado = new Horario();
-        for (Aula aula : horario.getAulas()){
-            if(ucsEscolhidas.contains(aula.uc())){
+        for (Aula aula : horario.getAulas()) {
+            if (ucsEscolhidas.contains(aula.uc())) {
                 horarioCriado.adicionarAula(aula);
             }
         }
         return horarioCriado;
     }
-
 
 
 }

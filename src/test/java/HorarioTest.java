@@ -33,7 +33,6 @@ class HorarioTest {
         testValidSchedule("validtest.json");
         testInvalidShedule("invalid.json");
         testEmptySchedule("empty.json");
-
     }
 
     private static void testValidSchedule(String filename) {
