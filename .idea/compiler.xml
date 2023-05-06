@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ES" />
+        <module name="LEI4-GrupoB" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ES" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
