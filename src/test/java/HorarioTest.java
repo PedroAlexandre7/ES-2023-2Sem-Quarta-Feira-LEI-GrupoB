@@ -26,7 +26,6 @@ class HorarioTest {
         testValidSchedule("validtest.csv");
         testInvalidShedule("invalid.csv");
         testEmptySchedule("empty.csv");
-
     }
 
     @Test
