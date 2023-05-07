@@ -73,7 +73,7 @@ public class FileManager {
      * @param outputFilePath
      */
     static public void saveInJSON(Horario horario, String outputFilePath) {
-        if (h == null) {
+        if (horario == null) {
             throw new NullPointerException("O horario fornecido é igual a null");
         }
         List<Map<String, String>> data = new ArrayList<>();
