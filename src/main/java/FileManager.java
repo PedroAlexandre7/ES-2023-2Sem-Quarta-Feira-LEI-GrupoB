@@ -46,8 +46,8 @@ public class FileManager {
 
     /**
      *
-     * @param inputFile
-     * @param outputFilePath
+     * @param inputFile ficheiro JSON para converter para CSV
+     * @param outputFilePath caminho onde ficheiro CSV irá ser guardado
      */
     public static void convertJSONtoCSV(File inputFile, String outputFilePath) {
         File csvFile = new File(outputFilePath);
@@ -68,9 +68,10 @@ public class FileManager {
     }
 
     /**
+     * Este método cria um ficheiro JSON a partir de um horário fornecido.
      *
-     * @param horario
-     * @param outputFilePath
+     * @param horario objeto Horario para guardar em ficheiro JSON
+     * @param outputFilePath caminho onde ficheiro JSON irá ser guardado
      */
     static public void saveInJSON(Horario horario, String outputFilePath) {
         if (horario == null) {
@@ -114,9 +115,10 @@ public class FileManager {
     }
 
     /**
+     * Este método cria um ficheiro CSV a partir de um horário fornecido.
      *
-     * @param horario
-     * @param caminhoDeOutput
+     * @param horario objeto Horario para guardar em ficheiro CSV
+     * @param caminhoDeOutput caminho onde ficheiro CSV irá ser guardado
      */
     static public void saveInCSV(Horario horario, String caminhoDeOutput) {
         try {
