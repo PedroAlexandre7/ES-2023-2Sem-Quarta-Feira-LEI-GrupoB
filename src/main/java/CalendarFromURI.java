@@ -14,6 +14,11 @@ public class CalendarFromURI {
     private CalendarFromURI() {
     }
 
+    /**
+     *
+     * @param uri
+     * @return
+     */
     public static Calendar getCalendar(String uri) {
         try {
             if (uri.startsWith("webcal"))
@@ -29,6 +34,11 @@ public class CalendarFromURI {
 
     }
 
+    /**
+     *
+     * @param calendar
+     * @return
+     */
     public static Horario CalendarToHorario(Calendar calendar) {
         Horario horario = new Horario();
         for (CalendarComponent calendarComponent : calendar.getComponents()) {
@@ -50,6 +60,11 @@ public class CalendarFromURI {
         return horario;
     }
 
+    /**
+     *
+     * @param weekDay
+     * @return
+     */
     private static String translateWeekDayEnum(DayOfWeek weekDay) {
         return switch (weekDay) {
             case MONDAY -> "Seg";
