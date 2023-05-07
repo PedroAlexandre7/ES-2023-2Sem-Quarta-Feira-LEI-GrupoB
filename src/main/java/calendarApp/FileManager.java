@@ -123,20 +123,23 @@ public class FileManager {
      * @param caminhoDeOutput caminho onde ficheiro CSV irá ser guardado
      */
     static public void saveInCSV(Horario horario, String caminhoDeOutput) {
+        if (horario == null) {
+            throw new NullPointerException("O horario fornecido é igual a null");
+        }
         try {
-            File csvFile = new File(caminhoDeOutput); // Cria um ficheiro CSV
-            // Cria um género de printwriter para escrever
+            File csvFile = new File(caminhoDeOutput);
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-
-            for (Aula a : horario.getAulas()) {
+                    writer.writeNext(new String[] {"Curso", "Unidade Curricular", "Turno", "Turma", "Inscritos no turno", "Dia da semana", "Hora início da aula", "Hora fim da aula", "Data da aula", "Sala atribuída à aula", "Lotação da sala"});
+                for (Aula a : horario.getAulas()) {
                 String[] rowData = { listToString(a.cursos()), a.uc(), a.turno().nome(), listToString(a.turmas()),
-                        Integer.toString(a.turno().numInscritos()), a.data().getDayOfWeek().toString(),
+                        Integer.toString(a.turno().numInscritos()), a.diaDaSemana(),
                         a.horaInicio().format(TIME_FORMATTER), a.horaFim().format(TIME_FORMATTER),
-                        a.data().format(DATE_FORMATTER),
-                        a.sala().nome(),
-                        Integer.toString(a.sala().lotacao())};
-                writer.writeNext(rowData);
+                        a.data() != null ? a.data().format(DATE_FORMATTER) : "",
+                        !a.sala().nome().isBlank() ? a.sala().nome() : "",
+                        a.sala().lotacao()!=0 ? Integer.toString(a.sala().lotacao()): ""};
+                        writer.writeNext(rowData);
+
             }
             writer.close();
         } catch (IOException e) {
