@@ -33,8 +33,11 @@ public class Horario {
 
     /**
      *
-     * @param ficheiro
-     * @throws Exception
+     * Este método cria e adiciona aulas a {@code this} a partir do ficheiro fornecido.
+     *
+     *
+     * @param ficheiro ficheiro CSV para ler
+     * @throws Exception quando existe um erro ao ler o ficheiro CSV
      */
     public void lerCSV(File ficheiro) throws Exception {
         try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
