@@ -7,10 +7,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static calendarApp.FileManager.saveInCSV;
 
@@ -101,12 +98,6 @@ public class Horario {
         adicionarAula(aula);
     }
 
-    public Horario chamarHorario(String path) {
-        Horario h = criarHorario(this.getUcs());
-        FileManager.saveInCSV(h, path);
-        return h;
-    }
-
     private List<String> getUcs(){
         List<String> list = new ArrayList<>();
         for (Aula a : aulas) {
@@ -119,7 +110,6 @@ public class Horario {
 
     /**
      *
-     * @param horario recebe um objeto Horario
      * @param ucsEscolhidas recebe lista de Strings representando as ucs escolhidas
      * @return retorna um novo objeto Horario com apenas as aulas das ucs escolhidas
      */
