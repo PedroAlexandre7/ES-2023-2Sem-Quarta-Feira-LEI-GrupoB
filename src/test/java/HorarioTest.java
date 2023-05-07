@@ -38,6 +38,28 @@ class HorarioTest {
         testEmptySchedule("empty.json");
     }
 
+    @Test
+    public void checkForCollisions() throws Exception {
+        Horario horario1 = new Horario();
+        horario1.lerCSV(new File("validtest.csv"));
+        Horario horario2 = new Horario();
+        horario2.lerCSV(new File("validtest2.csv"));
+        assertTrue(horario1.checkForColisions());
+        assertFalse(horario2.checkForColisions());
+
+    }
+
+    @Test
+    public void checkForOverbooking() throws Exception {
+        Horario horario1 = new Horario();
+        horario1.lerCSV(new File("validtest.csv"));
+        Horario horario2 = new Horario();
+        horario2.lerCSV(new File("validtest2.csv"));
+        assertFalse(horario1.checkForOverbooking());
+        assertTrue(horario2.checkForOverbooking());
+
+    }
+
     private static void testValidSchedule(String filename) {
         Horario horario = new Horario();
         if (filename.endsWith(".csv"))
@@ -74,4 +96,7 @@ class HorarioTest {
             assertDoesNotThrow(() -> horario.lerCSV(new File( new File("").getAbsolutePath() + File.separator + filename)));
         assertEquals(0, horario.getAulas().size());
     }
+
+
+
 }

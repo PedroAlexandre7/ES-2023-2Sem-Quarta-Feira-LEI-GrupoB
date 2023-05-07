@@ -18,6 +18,10 @@ public class Horario {
         this.aulas = new ArrayList<>();
     }
 
+    public Horario(List<Aula> aulas) {
+        this.aulas = aulas;
+    }
+
     public List<Aula> getAulas() {
         return aulas;
     }
@@ -26,9 +30,9 @@ public class Horario {
         aulas.add(aula);
     }
 
-//    public void removerAula(calendarApp.Aula aula) {
-//        aulas.remove(aula);
-//    }
+    public void removerAula(Aula aula) {
+        aulas.remove(aula);
+    }
 
     /**
      * Este método cria e adiciona aulas a {@code this} a partir do ficheiro fornecido.
@@ -82,10 +86,10 @@ public class Horario {
 
     private void criarAulaJSON(Map<String, String> row) {
         List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
-        Turno turno = new Turno(row.get("calendarApp.Turno"), Integer.parseInt(row.get("Inscritos no turno")));
+        Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
         List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
         LocalDate dataAula = row.get("Data da aula").isEmpty() ? null : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String nomeSala = row.get("calendarApp.Sala atribuída à aula").isEmpty() ? "" : row.get("calendarApp.Sala atribuída à aula");
+        String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
         int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
         Sala sala = new Sala(nomeSala, lotacaoSala);
         Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, row.get("Dia da semana"), LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
@@ -106,6 +110,7 @@ public class Horario {
         }
         return list;
     }
+
 
     /**
      * @param ucsEscolhidas recebe lista de Strings representando as ucs escolhidas
@@ -130,20 +135,21 @@ public class Horario {
                 return true;
             }
         }
+        return false;
     }
 
     //retorna true se houver colisões
-    private boolean doTheyOverlap(Aula a, Aula b){
-        return a.horaFim().isBefore(b.horaInicio()) || b.horaFim().isBefore(a.horaInicio());
+    private boolean doTheyOverlap(Aula a, Aula b) {
+        if(!a.data().equals(b.data()))
+            return false;
+        return !a.horaInicio().isAfter(b.horaFim()) && !b.horaInicio().isAfter(a.horaFim());
     }
 
-    private void checkForOverbooking(){
-        for(Aula a : aulas){
-            int totalInscritos = a.turno().numInscritos();
-            if(a.sala().lotacao()<totalInscritos){
-                System.err.println("Há sobrelotação na aula: " + a);
-            }
-        }
+    public boolean checkForOverbooking() {
+        for (Aula a : aulas)
+            if (a.sala().lotacao() < a.turno().numInscritos())
+                return true;
+        return false;
     }
 
 
