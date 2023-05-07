@@ -29,11 +29,11 @@ class FileManagerTest {
 //    }
     @Test
     void convertCSVtoJSON() {
-        FileManager.convertCSVtoJSON(new File("validtest.csv"), "output.json");
+        FileManager.convertCSVtoJSON(new File("./src/test/validtest.csv"), "output.json");
         List<String> expectedLines;
         List<String> actualLines;
         try {
-            expectedLines = Files.readAllLines(Path.of("validtest.json"), StandardCharsets.UTF_8);
+            expectedLines = Files.readAllLines(Path.of("./src/test/validtest.json"), StandardCharsets.UTF_8);
             actualLines = Files.readAllLines(Path.of("output.json"), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -58,11 +58,11 @@ class FileManagerTest {
 //    }
     @Test
     void convertJSONtoCSV() {
-        FileManager.convertJSONtoCSV(new File("validtest.json"), "output.csv");
+        FileManager.convertJSONtoCSV(new File("./src/test/validtest.json"), "output.csv");
         List<String> expectedLines;
         List<String> actualLines;
         try {
-            expectedLines = Files.readAllLines(Path.of("validtest.csv"), StandardCharsets.UTF_8);
+            expectedLines = Files.readAllLines(Path.of("./src/test/validtest.csv"), StandardCharsets.UTF_8);
             actualLines = Files.readAllLines(Path.of("output.csv"), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -72,7 +72,7 @@ class FileManagerTest {
     }
 
     @Test
-    void saveInCSVTest() {
+    void saveInCSV() {
         Horario horario = new Horario();
         try {
             horario.lerCSV(new File("validtest.csv"));
@@ -92,7 +92,7 @@ class FileManagerTest {
     }
 
     @Test
-    void saveInJSONTest() {
+    void saveInJSON() {
         Horario horario = new Horario();
         try {
             horario.lerJSON(new File("validtest.json"));

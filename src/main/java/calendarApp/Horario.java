@@ -7,10 +7,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Horario {
@@ -95,10 +92,10 @@ public class Horario {
         adicionarAula(aula);
     }
 
-    public Horario chamarHorario(String path){
-        Horario h = criarHorario(this,this.getUcs());
-        FileManager.saveInCSV(h,path);
-       return h;
+    public Horario chamarHorario(String path) {
+        Horario h = criarHorario(this.getUcs());
+        FileManager.saveInCSV(h, path);
+        return h;
     }
 
     private List<String> getUcs() {
