@@ -26,8 +26,8 @@ public class FileManager {
 
     /**
      *
-     * @param inputFile
-     * @param outputFilePath
+     * @param inputFile ficheiro CSV para converter para JSON
+     * @param outputFilePath caminho onde ficheiro JSON irá ser guardado
      */
     public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
 
@@ -140,11 +140,7 @@ public class FileManager {
         }
     }
 
-    /**
-     *
-     * @param list
-     * @return
-     */
+
     private static String listToString(List<String> list) {
         if (list.size() == 0)
             return "";
