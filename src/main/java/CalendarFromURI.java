@@ -1,8 +1,12 @@
 import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -14,25 +18,22 @@ public class CalendarFromURI {
     private CalendarFromURI() {
     }
 
+
     /**
      *
      * @param uri
      * @return
      */
-    public static Calendar getCalendar(String uri) {
-        try {
+    public static Calendar getCalendar(String uri) throws Exception {
             if (uri.startsWith("webcal"))
                 uri = uri.replaceFirst("webcal", "https");
             URL url = new URI(uri).toURL();
             System.setProperty("net.fortuna.ical4j.timezone.cache.impl", "net.fortuna.ical4j.util.MapTimeZoneCache");
             CalendarBuilder calendarBuilder = new CalendarBuilder();
             return calendarBuilder.build(url.openStream());
-        } catch (Exception e) {
-            System.err.println("There was a problem getting the calendar from the URI. " + e.getMessage());
-            return null;
         }
 
-    }
+
 
     /**
      *
