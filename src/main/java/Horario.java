@@ -136,4 +136,32 @@ public class Horario {
     }
 
 
+    //TODO falta validar se uma começa enquanto a outra está a decorrer
+    private void checkForColisions(){
+        for(Aula a : aulas){
+            for(Aula b : aulas){
+                if(!a.equals(b)&& a.diaDaSemana()==b.diaDaSemana() &&a.data()==b.data() && a.sala()==b.sala() && doTheyOverlap(a, b))
+                    System.err.println("Foi encontrada uma colisão na aula: " +a+ " com a aula: " +b);
+            }
+        }
+    }
+
+    //retorna true se houver colisões
+    private boolean doTheyOverlap(Aula a, Aula b){
+        if(a.horaFim().isBefore(b.horaInicio()) || b.horaFim().isBefore(a.horaInicio()) )
+            return false;
+        return true;
+
+    }
+
+    private void checkForOverbooking(){
+        for(Aula a : aulas){
+            int totalInscritos = a.turno().numInscritos();
+            if(a.sala().lotacao()<totalInscritos){
+                System.err.println("Há sobrelotação na aula: " + a);
+            }
+        }
+    }
+
+
 }
