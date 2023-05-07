@@ -36,11 +36,8 @@
                      System.out.println("A ler aula...");
                      eventData += "{";
                      eventData += "\"title\":\"" + aula.uc() + "\",";
-                     eventData += "\"start\":\"" + aula.data() + "\",";
-                     eventData += "\"end\":\"" + aula.data() + "\",";
-                     eventData += "\"startTime\":\"" + aula.horaInicio().toString() + "\",";
-                     eventData += "\"endTime\":\"" + aula.horaFim().toString() + "\",";
-                     eventData += "\"daysOfWeek\":\"" + aula.diaDaSemana() + "\",";
+                     eventData += "\"start\":\"" + aula.data() + "T" + aula.horaInicio().toString() + "\",";
+                     eventData += "\"end\":\"" + aula.data() + "T" + aula.horaFim().toString() + "\",";
                      eventData += "\"location\":\"" + aula.sala().toString() + "\",";
                      eventData += "},";
                  }
@@ -54,13 +51,16 @@
         <div id="calendar" style=" height:500px";></div>
         <% System.out.println("Dentro do calendario: " + eventData); %>
         <script>
-            $(document).ready(function() {
-                $('#calendar').fullCalendar({
-                    events: <%= eventData %>
-                });
-                calendar.render();
+          document.addEventListener("DOMContentLoaded", function() {
+            var eventData = <%= eventData %>; // assuming eventData is a JSON object or array
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              events: eventData
             });
+            calendar.render();
+          });
         </script>
+
    <% } %>
    <% if (request.getMethod().equalsIgnoreCase("POST") && horario == null) { %>
        <p>Error reading file. Please try again.</p>
