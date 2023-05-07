@@ -31,6 +31,11 @@ public class Horario {
 //        aulas.remove(aula);
 //    }
 
+    /**
+     *
+     * @param ficheiro
+     * @throws Exception
+     */
     public void lerCSV(File ficheiro) throws Exception {
         try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
             br.readLine(); // serve para descartar a primeira linha
@@ -42,6 +47,10 @@ public class Horario {
         }
     }
 
+    /**
+     *
+     * @param linha
+     */
     private void criarAulaCSV(String linha) {
         String[] campos = linha.split(";", -1);
         List<String> cursos = Arrays.stream(campos[0].split(", ")).toList();
@@ -55,6 +64,11 @@ public class Horario {
         adicionarAula(aula);
     }
 
+    /**
+     *
+     * @param ficheiro
+     * @throws Exception
+     */
     public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -67,6 +81,10 @@ public class Horario {
         }
     }
 
+    /**
+     *
+     * @param row
+     */
     private void criarAulaJSON(Map<String, String> row) {
         List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
         Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
@@ -90,10 +108,8 @@ public class Horario {
     //public Horario criarHorario(Horario horario){
     //Horario horarioCriado = new Horario();
     //for (Aula aula : horario.getAulas()){
-
+    //  }
     //}
-    //}
-
 
     //horario.getAulas() e para cada Aula, fazer aula.getUc(). Adicionar cada uc a uma lista, sem repetiçoes
     // Lista de ucs aparece na página Criar horário
@@ -102,8 +118,13 @@ public class Horario {
 
     //ucs que aparecem em Criar Horario
 
-
-    public Horario criarHorario(Horario horario, List<String> ucsEscolhidas) {
+    /**
+     *
+     * @param horario
+     * @param ucsEscolhidas
+     * @return
+     */
+    public Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
         Horario horarioCriado = new Horario();
         for (Aula aula : horario.getAulas()) {
             if (ucsEscolhidas.contains(aula.uc())) {
@@ -112,6 +133,31 @@ public class Horario {
         }
         return horarioCriado;
     }
+    
+    //TODO falta validar se uma começa enquanto a outra está a decorrer
+    private void checkForColisions(){
+        for(Aula a : aulas){
+            for(Aula b : aulas){
+                if(!a.equals(b)&& a.diaDaSemana()==b.diaDaSemana() &&a.data()==b.data() && a.sala()==b.sala() && doTheyOverlap(a, b))
+                    System.err.println("Foi encontrada uma colisão na aula: " +a+ " com a aula: " +b);
+            }
+        }
+    }
 
+    //retorna true se houver colisões
+    private boolean doTheyOverlap(Aula a, Aula b){
+        if(a.horaFim().isBefore(b.horaInicio()) || b.horaFim().isBefore(a.horaInicio()) )
+            return false;
+        return true;
 
+    }
+
+    private void checkForOverbooking(){
+        for(Aula a : aulas){
+            int totalInscritos = a.turno().numInscritos();
+            if(a.sala().lotacao()<totalInscritos){
+                System.err.println("Há sobrelotação na aula: " + a);
+            }
+        }
+    }
 }
