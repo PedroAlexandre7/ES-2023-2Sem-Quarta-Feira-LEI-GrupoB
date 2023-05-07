@@ -1,9 +1,9 @@
 Curso;Unidade Curricular;Turno;Turma;Inscritos no turno;Dia da semana;Hora início da aula;Hora fim da aula;Data da aula;Sala atribuída à aula;Lotação da sala
 ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Sex;13:00:00;14:30:00;02/12/2022;AA2.25;34
 ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Qua;13:00:00;14:30:00;23/11/2022;AA2.25;34
-ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Qua;13:00:00;14:30:00;16/11/2022;AA2.25;34
-ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Qua;11:00:00;14:30:00;09/11/2022;AA2.25;34
+ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Qua;13:00:00;14:30:00;16/11/2022;AA2.25;20
+ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Qua;13:00:00;14:30:00;09/11/2022;AA2.25;34
 ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Qua;13:00:00;14:30:00;02/11/2022;AA2.25;34
 ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;30;Seg;13:00:00;14:30:00;28/11/2022;AA2.25;34
-ME, LEI, LIGE;Teoria dos Jogos e dos Contratos;01789TP01;MEA1, MEA2, IC-4, IC-5, IC-6;30;Seg;13:00:00;14:30:00;28/11/2022;AA2.25;34
+ME, LEI, LIGE;Teoria dos Jogos e dos Contratos;01789TP01;MEA1, MEA2, IC-4, IC-5, IC-6;30;Seg;15:00:00;16:30:00;28/11/2022;AA2.25;34
 ME;Teoria dos Jogos e dos Contratos;01789TP01;MEA1;0;Seg;13:00:00;14:30:00;29/11/2022;;

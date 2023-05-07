@@ -23,6 +23,10 @@ public class Horario {
         this.aulas = new ArrayList<>();
     }
 
+    public Horario(List<Aula> aulas) {
+        this.aulas = aulas;
+    }
+
     public List<Aula> getAulas() {
         return aulas;
     }
@@ -36,9 +40,7 @@ public class Horario {
     }
 
     /**
-     *
      * Este método cria e adiciona aulas a {@code this} a partir do ficheiro fornecido.
-     *
      *
      * @param ficheiro ficheiro CSV para ler
      * @throws Exception quando existe um erro ao ler o ficheiro CSV
@@ -77,7 +79,8 @@ public class Horario {
     public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {
+            });
             for (Map<String, String> row : data)
                 criarAulaJSON(row);
         } catch (Exception e) {
@@ -88,35 +91,35 @@ public class Horario {
 
     private void criarAulaJSON(Map<String, String> row) {
         List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
-        Turno turno = new Turno(row.get("calendarApp.Turno"), Integer.parseInt(row.get("Inscritos no turno")));
+        Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
         List<String> turmas = Arrays.asList(row.get("Turma").split(", "));
         LocalDate dataAula = row.get("Data da aula").isEmpty() ? null : LocalDate.parse(row.get("Data da aula"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String nomeSala = row.get("calendarApp.Sala atribuída à aula").isEmpty() ? "" : row.get("calendarApp.Sala atribuída à aula");
+        String nomeSala = row.get("Sala atribuída à aula").isEmpty() ? "" : row.get("Sala atribuída à aula");
         int lotacaoSala = row.get("Lotação da sala").isEmpty() ? 0 : Integer.parseInt(row.get("Lotação da sala"));
         Sala sala = new Sala(nomeSala, lotacaoSala);
         Aula aula = new Aula(cursos, row.get("Unidade Curricular"), turno, turmas, row.get("Dia da semana"), LocalTime.parse(row.get("Hora início da aula")), LocalTime.parse(row.get("Hora fim da aula")), sala, dataAula);
         adicionarAula(aula);
     }
 
-    /*public Horario chamarHorario(String path){
+    public Horario chamarHorario(String path) {
         Horario h = criarHorario(this.getUcs());
-        saveInCSV(h,path);
-       return h;
+        FileManager.saveInCSV(h, path);
+        return h;
     }
 
-     */
-
-    public List<String> getUcs(){
+    private List<String> getUcs(){
         List<String> list = new ArrayList<>();
-        for(Aula a : aulas){
-            if(!list.contains(a.uc()))
+        for (Aula a : aulas) {
+            if (!list.contains(a.uc()))
                 list.add(a.uc());
         }
         return list;
     }
 
+
     /**
      *
+     * @param horario recebe um objeto Horario
      * @param ucsEscolhidas recebe lista de Strings representando as ucs escolhidas
      * @return retorna um novo objeto Horario com apenas as aulas das ucs escolhidas
      */
@@ -130,27 +133,40 @@ public class Horario {
         return this;
     }
 
-    private void checkForColisions(){
-        for(Aula a : aulas){
-            for(Aula b : aulas){
-                if(!a.equals(b)&& a.diaDaSemana().equals(b.diaDaSemana()) && a.data().equals(b.data()) && a.sala().equals(b.sala()) && doTheyOverlap(a, b))
-                    System.err.println("Foi encontrada uma colisão na aula: " +a+ " com a aula: " +b);
+    /**
+     *
+     * @return true se houver sobreposição de aulas na mesma sala, false caso contrário
+     */
+
+    public boolean checkForColisions() {
+        aulas.sort(Comparator.naturalOrder());
+        for (int i = 0; i < aulas.size() - 1; i++) {
+            Aula a = aulas.get(i);
+            Aula b = aulas.get(i + 1);
+            if (a.sala().equals(b.sala()) && doTheyOverlap(a, b)) {
+                return true;
             }
         }
+        return false;
     }
 
     //retorna true se houver colisões
-    private boolean doTheyOverlap(Aula a, Aula b){
-        return a.horaFim().isBefore(b.horaInicio()) || b.horaFim().isBefore(a.horaInicio());
+    private boolean doTheyOverlap(Aula a, Aula b) {
+        if(!a.data().equals(b.data()))
+            return false;
+        return !a.horaInicio().isAfter(b.horaFim()) && !b.horaInicio().isAfter(a.horaFim());
     }
 
-    private void checkForOverbooking(){
-        for(Aula a : aulas){
-            int totalInscritos = a.turno().numInscritos();
-            if(a.sala().lotacao()<totalInscritos){
-                System.err.println("Há sobrelotação na aula: " + a);
-            }
-        }
+    /**
+     *
+     * @return true se houver alguma aula numa sala onde o número de inscritos é maior que a lotação da sala
+     */
+
+    public boolean checkForOverbooking() {
+        for (Aula a : aulas)
+            if (a.sala().lotacao() < a.turno().numInscritos())
+                return true;
+        return false;
     }
 
 
