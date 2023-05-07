@@ -1,3 +1,5 @@
+package calendarApp;
+
 public record Sala(String nome, int lotacao) {
 
     @Override
