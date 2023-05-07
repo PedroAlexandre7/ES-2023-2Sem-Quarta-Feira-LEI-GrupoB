@@ -72,9 +72,23 @@ class FileManagerTest {
     }
 
     @Test
-    void saveInCSV() {
-        //1º Ler um ficheiro
-        //calendarApp.FileManager.saveInCSV(new calendarApp.Horario(calendarApp.Horario.lerCSV(new File("input.csv")));, "savedInCSV");
+    void saveInCSVTest() {
+        Horario horario = new Horario();
+        try {
+            horario.lerCSV(new File("validtest.csv"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        FileManager.saveInCSV(horario, "output.csv");
+        Horario horarioSalvo = new Horario();
+        try {
+            horarioSalvo.lerCSV(new File("output.csv"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(horario.getAulas(), horarioSalvo.getAulas());
+        assertThrows(NullPointerException.class, () -> FileManager.saveInCSV(null, "error"));
+
     }
 
     @Test
