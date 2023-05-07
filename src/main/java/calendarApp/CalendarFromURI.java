@@ -20,7 +20,16 @@ public class CalendarFromURI {
     private CalendarFromURI() {
     }
 
-    public static Calendar getCalendar(String uri) throws URISyntaxException, IOException, ParserException {
+    /**
+     *
+     * @param uri o uri com a página para obter o calendário. Pode ter protocolo webcal ou https.
+     * @return O calendário obtido do uri fornecido.
+     * @throws URISyntaxException Se a hiperligação tiver o protocolo errado ou outro erro estrutural.
+     * @throws IOException Se não foi possível aceder à hiperligação fornecida.
+     * @throws ParserException Se a hiperligação corresponder a uma página não relacionada com calendários.
+     */
+
+    public static Calendar getCalendar(String uri) throws URISyntaxException, IOException, ParserException, IllegalArgumentException {
         if (uri.startsWith("webcal"))
             uri = uri.replaceFirst("webcal", "https");
         URL url = new URI(uri).toURL();
@@ -29,6 +38,16 @@ public class CalendarFromURI {
         return calendarBuilder.build(url.openStream());
     }
 
+    /**
+     *
+     * @param calendar o objeto do tipo Calendar que se pretende converter
+     * Através da propriedade "DESCRIPTION" de cada registo do calendário do Fénix, obtém-se a informação para
+     * obter um objeto do tipo Aula que será, posteriormente adicionada ao horário a ser devolvida pelo método.
+     * Existem certos atributos correspondentes a esta aula que não estão presentes no calendário do Fénix,
+     * portanto o objeto Aula terá "cursos" vazio, "turno" com "numInscritos" a 0, "turmas" vazio, e a "sala"
+     * com "lotacao" a 0.
+     * @return horário convertido
+     */
     public static Horario toHorario(Calendar calendar) {
         Horario horario = new Horario();
         for (CalendarComponent calendarComponent : calendar.getComponents()) {
@@ -53,6 +72,11 @@ public class CalendarFromURI {
         return horario;
     }
 
+    /**
+     *
+     * @param weekDay o dia da semana do enumerado DayOfWeek
+     * @return uma “String” traduzida correspondente ao weekDay
+     */
     private static String translateWeekDayEnum(DayOfWeek weekDay) {
         return switch (weekDay) {
             case MONDAY -> "Seg";
