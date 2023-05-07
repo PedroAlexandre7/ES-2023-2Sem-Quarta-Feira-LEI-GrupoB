@@ -126,6 +126,11 @@ public class Horario {
         return horarioCriado;
     }
 
+    /**
+     *
+     * @return true se houver sobreposição de aulas na mesma sala, false caso contrário
+     */
+
     public boolean checkForColisions() {
         aulas.sort(Comparator.naturalOrder());
         for (int i = 0; i < aulas.size() - 1; i++) {
@@ -144,6 +149,11 @@ public class Horario {
             return false;
         return !a.horaInicio().isAfter(b.horaFim()) && !b.horaInicio().isAfter(a.horaFim());
     }
+
+    /**
+     *
+     * @return true se houver alguma aula numa sala onde o número de inscritos é maior que a lotação da sala
+     */
 
     public boolean checkForOverbooking() {
         for (Aula a : aulas)
