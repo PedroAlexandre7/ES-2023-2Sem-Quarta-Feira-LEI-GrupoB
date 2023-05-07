@@ -18,5 +18,11 @@ class CalendarFromURITest {
         assertThrowsExactly(MalformedURLException.class, () ->CalendarFromURI.getCalendar(uri_wrongprotocol));
         assertThrowsExactly(IllegalArgumentException.class, () ->CalendarFromURI.getCalendar(uri_invalid), "URI is not absolute");
     }
+    @Test
+    void CalendarToHorario() throws Exception {
+        Calendar calendar = CalendarFromURI.getCalendar("webcal://fenix.iscte-iul.pt/publico/publicPersonICalendar.do?method=iCalendar&username=tmpad@iscte.pt&password=AvIiaG2D8H507zDPQ5z2E0GtvRiqqR344nYcmySXrj8DipFXaOHMeA4xiRq5ssS79PQfWuioSeMAY3o4HDo0OBj7x7vUXBYGino1iaKucOhQy3InweQ41BVtztjuoMyx");
+        Horario horario = CalendarFromURI.CalendarToHorario(calendar) ;
+        assertFalse(horario.getAulas().isEmpty());
+    }
 
 }

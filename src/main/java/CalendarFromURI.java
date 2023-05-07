@@ -1,12 +1,9 @@
 import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -55,7 +52,6 @@ public class CalendarFromURI {
             String salaNome = properties[6].toString().replaceFirst("LOCATION:", "").replaceAll("\\\\", "");
             String diaDaSemana = translateWeekDayEnum(data.getDayOfWeek());
             horario.adicionarAula(new Aula(new ArrayList<>(), uc, turno, new ArrayList<>(), diaDaSemana, horaInicio, horaFim, new Sala(salaNome, 0), data));
-
         }
 
         return horario;
