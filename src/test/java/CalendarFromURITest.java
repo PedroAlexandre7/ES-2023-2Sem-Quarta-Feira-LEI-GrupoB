@@ -1,9 +1,11 @@
+import calendarApp.CalendarFromURI;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import calendarApp.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

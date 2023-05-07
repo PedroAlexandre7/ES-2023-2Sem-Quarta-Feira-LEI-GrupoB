@@ -1,3 +1,4 @@
+import calendarApp.FileManager;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -6,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import calendarApp.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,7 +74,7 @@ class FileManagerTest {
     @Test
     void saveInCSV() {
         //1º Ler um ficheiro
-        //FileManager.saveInCSV(new Horario(Horario.lerCSV(new File("input.csv")));, "savedInCSV");
+        //calendarApp.FileManager.saveInCSV(new calendarApp.Horario(calendarApp.Horario.lerCSV(new File("input.csv")));, "savedInCSV");
     }
 
     @Test
