@@ -72,7 +72,8 @@ public class Horario {
     public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {
+            });
             for (Map<String, String> row : data)
                 criarAulaJSON(row);
         } catch (Exception e) {
@@ -105,12 +106,10 @@ public class Horario {
 
 
     //public Horario criarHorario(Horario horario){
-        //Horario horarioCriado = new Horario();
-        //for (Aula aula : horario.getAulas()){
-
-        //}
+    //Horario horarioCriado = new Horario();
+    //for (Aula aula : horario.getAulas()){
+    //  }
     //}
-
 
     //horario.getAulas() e para cada Aula, fazer aula.getUc(). Adicionar cada uc a uma lista, sem repetiçoes
     // Lista de ucs aparece na página Criar horário
@@ -127,15 +126,14 @@ public class Horario {
      */
     public Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
         Horario horarioCriado = new Horario();
-        for (Aula aula : horario.getAulas()){
-            if(ucsEscolhidas.contains(aula.uc())){
+        for (Aula aula : horario.getAulas()) {
+            if (ucsEscolhidas.contains(aula.uc())) {
                 horarioCriado.adicionarAula(aula);
             }
         }
         return horarioCriado;
     }
-
-
+    
     //TODO falta validar se uma começa enquanto a outra está a decorrer
     private void checkForColisions(){
         for(Aula a : aulas){
@@ -162,6 +160,4 @@ public class Horario {
             }
         }
     }
-
-
 }
