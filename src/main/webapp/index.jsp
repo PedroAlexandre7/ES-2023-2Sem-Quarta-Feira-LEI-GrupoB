@@ -23,7 +23,6 @@
          Horario horario = null;
          if (request != null && request.getMethod().equalsIgnoreCase("POST")) {
              String fileName = request.getParameter("file_path");
-             System.out.println(fileName);
              try {
                  horario = new Horario();
                  horario.lerCSV(new File(fileName));
@@ -33,7 +32,6 @@
              if (horario != null) {
                  eventData = "[";
                  for (Aula aula : horario.getAulas()) {
-                     System.out.println("A ler aula...");
                      eventData += "{";
                      eventData += "\"title\":\"" + aula.uc() + "\",";
                      eventData += "\"start\":\"" + aula.data() + "T" + aula.horaInicio().toString() + "\",";
@@ -43,13 +41,11 @@
                  }
                  eventData = eventData.substring(0, eventData.length() - 1); //remove a ultima virgula
                  eventData += "]";
-                 System.out.println("Criada a String" + eventData);
              }
          }
    %>
    <% if (eventData != null) { %>
         <div id="calendar" style=" height:500px";></div>
-        <% System.out.println("Dentro do calendario: " + eventData); %>
         <script>
           document.addEventListener("DOMContentLoaded", function() {
             var eventData = <%= eventData %>; // assuming eventData is a JSON object or array
