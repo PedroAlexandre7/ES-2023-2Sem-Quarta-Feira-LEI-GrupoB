@@ -34,9 +34,7 @@ public class Horario {
 //    }
 
     /**
-     *
      * Este método cria e adiciona aulas a {@code this} a partir do ficheiro fornecido.
-     *
      *
      * @param ficheiro ficheiro CSV para ler
      * @throws Exception quando existe um erro ao ler o ficheiro CSV
@@ -75,7 +73,8 @@ public class Horario {
     public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(ficheiro, new TypeReference<>() {
+            });
             for (Map<String, String> row : data)
                 criarAulaJSON(row);
         } catch (Exception e) {
@@ -102,36 +101,36 @@ public class Horario {
        return h;
     }
 
-    private List<String> getUcs(){
+    private List<String> getUcs() {
         List<String> list = new ArrayList<>();
-        for(Aula a : aulas){
-            if(!list.contains(a.uc()))
+        for (Aula a : aulas) {
+            if (!list.contains(a.uc()))
                 list.add(a.uc());
         }
         return list;
     }
 
     /**
-     *
-     * @param horario recebe um objeto Horario
      * @param ucsEscolhidas recebe lista de Strings representando as ucs escolhidas
      * @return retorna um novo objeto Horario com apenas as aulas das ucs escolhidas
      */
-    private Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
+    private Horario criarHorario(List<String> ucsEscolhidas) {
         Horario horarioCriado = new Horario();
-        for (Aula aula : horario.getAulas()){
-            if(ucsEscolhidas.contains(aula.uc())){
+        for (Aula aula : this.getAulas()) {
+            if (ucsEscolhidas.contains(aula.uc())) {
                 horarioCriado.adicionarAula(aula);
             }
         }
         return horarioCriado;
     }
 
-    private void checkForColisions(){
-        for(Aula a : aulas){
-            for(Aula b : aulas){
-                if(!a.equals(b)&& a.diaDaSemana().equals(b.diaDaSemana()) && a.data().equals(b.data()) && a.sala().equals(b.sala()) && doTheyOverlap(a, b))
-                    System.err.println("Foi encontrada uma colisão na aula: " +a+ " com a aula: " +b);
+    public boolean checkForColisions() {
+        aulas.sort(Comparator.naturalOrder());
+        for (int i = 0; i < aulas.size() - 1; i++) {
+            Aula a = aulas.get(i);
+            Aula b = aulas.get(i + 1);
+            if (a.sala().equals(b.sala()) && doTheyOverlap(a, b)) {
+                return true;
             }
         }
     }
