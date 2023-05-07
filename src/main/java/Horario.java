@@ -47,10 +47,7 @@ public class Horario {
         }
     }
 
-    /**
-     *
-     * @param linha
-     */
+
     private void criarAulaCSV(String linha) {
         String[] campos = linha.split(";", -1);
         List<String> cursos = Arrays.stream(campos[0].split(", ")).toList();
@@ -65,9 +62,10 @@ public class Horario {
     }
 
     /**
+     * Este método cria e adiciona aulas a {@code this} a partir do ficheiro fornecido.
      *
-     * @param ficheiro
-     * @throws Exception
+     * @param ficheiro ficheiro JSON para ler
+     * @throws Exception quando existe um erro ao ler o ficheiro JSON
      */
     public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -80,10 +78,7 @@ public class Horario {
         }
     }
 
-    /**
-     *
-     * @param row
-     */
+
     private void criarAulaJSON(Map<String, String> row) {
         List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
         Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
@@ -96,34 +91,11 @@ public class Horario {
         adicionarAula(aula);
     }
 
-    //horario.getAulas() e para cada Aula, fazer aula.getUc(). Adicionar cada uc a uma lista, sem repetiçoes
-    // Lista de ucs aparece na página Criar horário
-    // utilizador este ucs --- getUcsEscolhidas
-    // criarHorario com getUcsEscolhidas
-
-    //ucs que aparecem em Criar Horario
-
-
-    //public Horario criarHorario(Horario horario){
-        //Horario horarioCriado = new Horario();
-        //for (Aula aula : horario.getAulas()){
-
-        //}
-    //}
-
-
-    //horario.getAulas() e para cada Aula, fazer aula.getUc(). Adicionar cada uc a uma lista, sem repetiçoes
-    // Lista de ucs aparece na página Criar horário
-    // utilizador este ucs --- getUcsEscolhidas
-    // criarHorario com getUcsEscolhidas
-
-    //ucs que aparecem em Criar Horario
-
     /**
      *
-     * @param horario
-     * @param ucsEscolhidas
-     * @return
+     * @param horario recebe um objeto Horario
+     * @param ucsEscolhidas recebe lista de Strings representando as ucs escolhidas
+     * @return retorna um novo objeto Horario com apenas as aulas das ucs escolhidas
      */
     public Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
         Horario horarioCriado = new Horario();
@@ -136,11 +108,10 @@ public class Horario {
     }
 
 
-    //TODO falta validar se uma começa enquanto a outra está a decorrer
     private void checkForColisions(){
         for(Aula a : aulas){
             for(Aula b : aulas){
-                if(!a.equals(b)&& a.diaDaSemana()==b.diaDaSemana() &&a.data()==b.data() && a.sala()==b.sala() && doTheyOverlap(a, b))
+                if(!a.equals(b)&& a.diaDaSemana().equals(b.diaDaSemana()) && a.data().equals(b.data()) && a.sala().equals(b.sala()) && doTheyOverlap(a, b))
                     System.err.println("Foi encontrada uma colisão na aula: " +a+ " com a aula: " +b);
             }
         }
@@ -148,10 +119,7 @@ public class Horario {
 
     //retorna true se houver colisões
     private boolean doTheyOverlap(Aula a, Aula b){
-        if(a.horaFim().isBefore(b.horaInicio()) || b.horaFim().isBefore(a.horaInicio()) )
-            return false;
-        return true;
-
+        return a.horaFim().isBefore(b.horaInicio()) || b.horaFim().isBefore(a.horaInicio());
     }
 
     private void checkForOverbooking(){
