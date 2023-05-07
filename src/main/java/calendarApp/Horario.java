@@ -98,7 +98,7 @@ public class Horario {
         adicionarAula(aula);
     }
 
-    private List<String> getUcs(){
+    public List<String> getUcs(){
         List<String> list = new ArrayList<>();
         for (Aula a : aulas) {
             if (!list.contains(a.uc()))
