@@ -24,6 +24,11 @@ public class FileManager {
         convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "ES/validtest.json"),"output.csv");
     }
 
+    /**
+     *
+     * @param inputFile
+     * @param outputFilePath
+     */
     public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
 
         File jsonFile = new File(outputFilePath);
@@ -39,6 +44,11 @@ public class FileManager {
         }
     }
 
+    /**
+     *
+     * @param inputFile
+     * @param outputFilePath
+     */
     public static void convertJSONtoCSV(File inputFile, String outputFilePath) {
         File csvFile = new File(outputFilePath);
         try {
@@ -56,11 +66,15 @@ public class FileManager {
         }
     }
 
-
-    static public void saveInJSON(Horario h, String outputFilePath) {
+    /**
+     *
+     * @param horario
+     * @param outputFilePath
+     */
+    static public void saveInJSON(Horario horario, String outputFilePath) {
         List<Map<String, String>> data = new ArrayList<>();
 
-        for (Aula a : h.getAulas()) {
+        for (Aula a : horario.getAulas()) {
             HashMap<String, String> aulaData = new HashMap<>();
             aulaData.put("Curso", listToString(a.cursos()));
             aulaData.put("Unidade Curricular", a.uc());
@@ -90,13 +104,18 @@ public class FileManager {
         }
     }
 
-    static public void saveInCSV(Horario h, String caminhoDeOutput) {
+    /**
+     *
+     * @param horario
+     * @param caminhoDeOutput
+     */
+    static public void saveInCSV(Horario horario, String caminhoDeOutput) {
         try {
             File csvFile = new File(caminhoDeOutput); // Cria um ficheiro CSV
             // Cria um género de printwriter para escrever
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-            for (Aula a : h.getAulas()) {
+            for (Aula a : horario.getAulas()) {
                 String[] rowData = { listToString(a.cursos()), a.uc(), a.turno().nome(), listToString(a.turmas()),
                         Integer.toString(a.turno().numInscritos()), a.data().getDayOfWeek().toString(),
                         a.horaInicio().format(TIME_FORMATTER), a.horaFim().format(TIME_FORMATTER),
@@ -111,6 +130,11 @@ public class FileManager {
         }
     }
 
+    /**
+     *
+     * @param list
+     * @return
+     */
     private static String listToString(List<String> list) {
         if (list.size() == 0)
             return "";

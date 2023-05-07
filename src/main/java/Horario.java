@@ -31,6 +31,11 @@ public class Horario {
 //        aulas.remove(aula);
 //    }
 
+    /**
+     *
+     * @param ficheiro
+     * @throws Exception
+     */
     public void lerCSV(File ficheiro) throws Exception {
         try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
             br.readLine(); // serve para descartar a primeira linha
@@ -42,6 +47,10 @@ public class Horario {
         }
     }
 
+    /**
+     *
+     * @param linha
+     */
     private void criarAulaCSV(String linha) {
         String[] campos = linha.split(";", -1);
         List<String> cursos = Arrays.stream(campos[0].split(", ")).toList();
@@ -55,6 +64,11 @@ public class Horario {
         adicionarAula(aula);
     }
 
+    /**
+     *
+     * @param ficheiro
+     * @throws Exception
+     */
     public void lerJSON(File ficheiro) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -66,6 +80,10 @@ public class Horario {
         }
     }
 
+    /**
+     *
+     * @param row
+     */
     private void criarAulaJSON(Map<String, String> row) {
         List<String> cursos = Arrays.asList(row.get("Curso").split(", "));
         Turno turno = new Turno(row.get("Turno"), Integer.parseInt(row.get("Inscritos no turno")));
@@ -101,7 +119,12 @@ public class Horario {
 
     //ucs que aparecem em Criar Horario
 
-
+    /**
+     *
+     * @param horario
+     * @param ucsEscolhidas
+     * @return
+     */
     public Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
         Horario horarioCriado = new Horario();
         for (Aula aula : horario.getAulas()){
@@ -111,7 +134,6 @@ public class Horario {
         }
         return horarioCriado;
     }
-
 
 
 }
