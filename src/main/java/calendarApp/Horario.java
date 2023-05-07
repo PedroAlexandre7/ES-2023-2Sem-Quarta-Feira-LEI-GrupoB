@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static calendarApp.FileManager.saveInCSV;
+
 
 public class Horario {
 
@@ -29,9 +31,9 @@ public class Horario {
         aulas.add(aula);
     }
 
-//    public void removerAula(calendarApp.Aula aula) {
-//        aulas.remove(aula);
-//    }
+    public void removerAula(calendarApp.Aula aula) {
+        aulas.remove(aula);
+    }
 
     /**
      *
@@ -96,13 +98,15 @@ public class Horario {
         adicionarAula(aula);
     }
 
-    public Horario chamarHorario(String path){
-        Horario h = criarHorario(this,this.getUcs());
-        FileManager.saveInCSV(h,path);
+    /*public Horario chamarHorario(String path){
+        Horario h = criarHorario(this.getUcs());
+        saveInCSV(h,path);
        return h;
     }
 
-    private List<String> getUcs(){
+     */
+
+    public List<String> getUcs(){
         List<String> list = new ArrayList<>();
         for(Aula a : aulas){
             if(!list.contains(a.uc()))
@@ -113,18 +117,17 @@ public class Horario {
 
     /**
      *
-     * @param horario recebe um objeto Horario
      * @param ucsEscolhidas recebe lista de Strings representando as ucs escolhidas
      * @return retorna um novo objeto Horario com apenas as aulas das ucs escolhidas
      */
-    private Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
-        Horario horarioCriado = new Horario();
-        for (Aula aula : horario.getAulas()){
-            if(ucsEscolhidas.contains(aula.uc())){
-                horarioCriado.adicionarAula(aula);
+    public Horario criarHorario(List<String> ucsEscolhidas,String path){
+        for (Aula aula : this.getAulas()){
+            if(!ucsEscolhidas.contains(aula.uc())){
+                this.removerAula(aula);
             }
         }
-        return horarioCriado;
+        saveInCSV(this,path);
+        return this;
     }
 
     private void checkForColisions(){
