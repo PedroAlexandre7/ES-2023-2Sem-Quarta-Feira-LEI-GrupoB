@@ -19,27 +19,9 @@
    <h1>Minha Agenda</h1>
    <form action="" method="post" enctype="multipart/form-data">
        <input type="file" name="fileInput" id="fileInput">
-       <input type="submit" value="Upload" id="uploadButton">
+       <input type="submit" value="Upload" onclick="submitForm()">
    </form>
-   <%
-       if (request.getMethod().equalsIgnoreCase("post")) {
-           Part filePart = request.getPart("fileInput");
-           File file = new File(filePart.getSubmittedFileName());
-           Horario horario = new Horario();
-           horario.lerCSV(file);
-           List<Map<String, Object>> events = new ArrayList<Map<String, Object>>();
-           for (Aula aula : horario.getAulas()) {
-               Map<String, Object> event = new HashMap<String, Object>();
-               event.put("title", aula.uc());
-               event.put("start", aula.horaInicio().toString());
-               event.put("end", aula.horaFim().toString());
-               event.put("dow", Collections.singletonList(aula.diaDaSemana()));
-               event.put("location", aula.sala().toString());
-               events.add(event);
-           }
-           out.println(new Gson().toJson(events));
-       }
-   %>
+
 
    <div id="calendar" style=" height:500px";></div>
    <script src="https://cdn.jsdelivr.net/webjars/org.webjars/fullcalendar/5.11.3/main.js"></script>
@@ -57,27 +39,47 @@
            });
            calendar.render();
 
-           $('form').submit(function(event) {
-               event.preventDefault();
-               var formData = new FormData(this);
-               $.ajax({
-                   url: this.action,
-                   type: this.method,
-                   data: formData,
-                   processData: false,
-                   contentType: false,
-                   success: function(response) {
-                       var events = JSON.parse(response);
-                       calendar.removeAllEvents();
-                       calendar.addEventSource(events);
-                   },
-                   error: function(xhr, status, error) {
-                       console.log('Error:', error);
-                   }
-               });
-           });
+           function submitForm() {
+                event.preventDefault();
+                var form = document.getElementById("myForm");
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = xhr.responseText;
+                        var output = document.getElementById("output");
+                        output.innerHTML = response;
+                    } else {
+                        console.log('Request failed.  Returned status of ' + xhr.status);
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
 
        });
    </script>
+   <%
+          if (request.getMethod().equalsIgnoreCase("post")) {
+              String filePath = request.getParameter("fileInput");
+              Horario horario = new Horario();
+              horario.lerCSV(new File(filePath));
+              List<Map<String, Object>> events = new ArrayList<Map<String, Object>>();
+              for (Aula aula : horario.getAulas()) {
+                  Map<String, Object> event = new HashMap<String, Object>();
+                  event.put("title", aula.uc());
+                  event.put("start", aula.horaInicio().toString());
+                  event.put("end", aula.horaFim().toString());
+                  event.put("dow", Collections.singletonList(aula.diaDaSemana()));
+                  event.put("location", aula.sala().toString());
+                  events.add(event);
+              }
+              Gson gson = new Gson();
+              String json = gson.toJson(events);
+              response.setContentType("application/json");
+              response.setCharacterEncoding("UTF-8");
+              response.getWriter().write(json);
+          }
+      %>
 </body>
 </html>
