@@ -1,9 +1,11 @@
 import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 
-
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -16,12 +18,7 @@ public class CalendarFromURI {
     }
 
 
-    /**
-     *
-     * @param uri
-     * @return
-     */
-    public static Calendar getCalendar(String uri) throws Exception {
+    public static Calendar getCalendar(String uri) throws URISyntaxException, IOException, ParserException {
             if (uri.startsWith("webcal"))
                 uri = uri.replaceFirst("webcal", "https");
             URL url = new URI(uri).toURL();
@@ -31,12 +28,6 @@ public class CalendarFromURI {
         }
 
 
-
-    /**
-     *
-     * @param calendar
-     * @return
-     */
     public static Horario CalendarToHorario(Calendar calendar) {
         Horario horario = new Horario();
         for (CalendarComponent calendarComponent : calendar.getComponents()) {
@@ -57,11 +48,6 @@ public class CalendarFromURI {
         return horario;
     }
 
-    /**
-     *
-     * @param weekDay
-     * @return
-     */
     private static String translateWeekDayEnum(DayOfWeek weekDay) {
         return switch (weekDay) {
             case MONDAY -> "Seg";
