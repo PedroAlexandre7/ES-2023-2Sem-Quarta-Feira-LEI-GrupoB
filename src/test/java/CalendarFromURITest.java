@@ -27,7 +27,7 @@ class CalendarFromURITest {
     @Test
     void CalendarToHorario() throws Exception {
         Calendar calendar = CalendarFromURI.getCalendar("webcal://fenix.iscte-iul.pt/publico/publicPersonICalendar.do?method=iCalendar&username=tmpad@iscte.pt&password=AvIiaG2D8H507zDPQ5z2E0GtvRiqqR344nYcmySXrj8DipFXaOHMeA4xiRq5ssS79PQfWuioSeMAY3o4HDo0OBj7x7vUXBYGino1iaKucOhQy3InweQ41BVtztjuoMyx");
-        Horario horario = CalendarFromURI.CalendarToHorario(calendar) ;
+        Horario horario = CalendarFromURI.toHorario(calendar) ;
         assertFalse(horario.getAulas().isEmpty());
     }
 

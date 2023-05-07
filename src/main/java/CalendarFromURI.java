@@ -27,7 +27,7 @@ public class CalendarFromURI {
         return calendarBuilder.build(url.openStream());
     }
 
-    public static Horario CalendarToHorario(Calendar calendar) {
+    public static Horario toHorario(Calendar calendar) {
         Horario horario = new Horario();
         for (CalendarComponent calendarComponent : calendar.getComponents()) {
             Object[] properties = calendarComponent.getProperties().toArray();
