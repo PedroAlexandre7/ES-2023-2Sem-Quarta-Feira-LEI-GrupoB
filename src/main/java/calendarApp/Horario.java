@@ -96,13 +96,28 @@ public class Horario {
         adicionarAula(aula);
     }
 
+    public Horario chamarHorario(String path){
+        Horario h = criarHorario(this,this.getUcs());
+        FileManager.saveInCSV(h,path);
+       return h;
+    }
+
+    private List<String> getUcs(){
+        List<String> list = new ArrayList<>();
+        for(Aula a : aulas){
+            if(!list.contains(a.uc()))
+                list.add(a.uc());
+        }
+        return list;
+    }
+
     /**
      *
      * @param horario recebe um objeto Horario
      * @param ucsEscolhidas recebe lista de Strings representando as ucs escolhidas
      * @return retorna um novo objeto Horario com apenas as aulas das ucs escolhidas
      */
-    public Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
+    private Horario criarHorario(Horario horario, List<String> ucsEscolhidas){
         Horario horarioCriado = new Horario();
         for (Aula aula : horario.getAulas()){
             if(ucsEscolhidas.contains(aula.uc())){
@@ -111,7 +126,6 @@ public class Horario {
         }
         return horarioCriado;
     }
-
 
     private void checkForColisions(){
         for(Aula a : aulas){
