@@ -26,7 +26,6 @@ class HorarioTest {
         testValidSchedule("validtest.csv");
         testInvalidShedule("invalid.csv");
         testEmptySchedule("empty.csv");
-
     }
 
     @Test
@@ -34,7 +33,6 @@ class HorarioTest {
         testValidSchedule("validtest.json");
         testInvalidShedule("invalid.json");
         testEmptySchedule("empty.json");
-
     }
 
     private static void testValidSchedule(String filename) {

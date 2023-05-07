@@ -17,13 +17,18 @@ public class FileManager {
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         //Horario horario = new Horario();
         //horario.lerCSV(new File("ES/input.csv"));
         //saveInJSON(horario,"output.json");
-        convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "ES/validtest.json"),"output.csv");
+        convertJSONtoCSV(new File(new File("").getAbsolutePath() + File.separator + "ES/validtest.json"), "output.csv");
     }
 
+    /**
+     *
+     * @param inputFile ficheiro CSV para converter para JSON
+     * @param outputFilePath caminho onde ficheiro JSON irá ser guardado
+     */
     public static void convertCSVtoJSON(File inputFile, String outputFilePath) {
 
         File jsonFile = new File(outputFilePath);
@@ -39,11 +44,17 @@ public class FileManager {
         }
     }
 
+    /**
+     *
+     * @param inputFile ficheiro JSON para converter para CSV
+     * @param outputFilePath caminho onde ficheiro CSV irá ser guardado
+     */
     public static void convertJSONtoCSV(File inputFile, String outputFilePath) {
         File csvFile = new File(outputFilePath);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {});
+            List<Map<String, String>> data = objectMapper.readValue(inputFile, new TypeReference<>() {
+            });
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             String[] headers = data.get(0).keySet().toArray(new String[0]);
@@ -56,11 +67,18 @@ public class FileManager {
         }
     }
 
-
-    static public void saveInJSON(Horario h, String outputFilePath) {
+    /**
+     * Este método cria um ficheiro JSON a partir de um horário fornecido.
+     *
+     * @param horario objeto Horario para guardar em ficheiro JSON
+     * @param outputFilePath caminho onde ficheiro JSON irá ser guardado
+     */
+    static public void saveInJSON(Horario horario, String outputFilePath) {
+        if (horario == null) {
+            throw new NullPointerException("O horario fornecido é igual a null");
+        }
         List<Map<String, String>> data = new ArrayList<>();
-
-        for (Aula a : h.getAulas()) {
+        for (Aula a : horario.getAulas()) {
             HashMap<String, String> aulaData = new HashMap<>();
             aulaData.put("Curso", listToString(a.cursos()));
             aulaData.put("Unidade Curricular", a.uc());
@@ -72,10 +90,16 @@ public class FileManager {
             aulaData.put("Hora fim da aula", a.horaFim().format(TIME_FORMATTER));
             if (a.data() != null)
                 aulaData.put("Data da aula", a.data().format(DATE_FORMATTER));
+            else
+                aulaData.put("Data da aula", "");
             if (!a.sala().nome().isBlank())
                 aulaData.put("Sala atribuída à aula", a.sala().nome());
+            else
+                aulaData.put("Sala atribuída à aula", "");
             if (a.sala().lotacao() != 0)
                 aulaData.put("Lotação da sala", Integer.toString(a.sala().lotacao()));
+            else
+                aulaData.put("Lotação da sala", "");
             data.add(aulaData);
         }
 
@@ -90,19 +114,26 @@ public class FileManager {
         }
     }
 
-    static public void saveInCSV(Horario h, String caminhoDeOutput) {
+    /**
+     * Este método cria um ficheiro CSV a partir de um horário fornecido.
+     *
+     * @param horario objeto Horario para guardar em ficheiro CSV
+     * @param caminhoDeOutput caminho onde ficheiro CSV irá ser guardado
+     */
+    static public void saveInCSV(Horario horario, String caminhoDeOutput) {
         try {
             File csvFile = new File(caminhoDeOutput); // Cria um ficheiro CSV
             // Cria um género de printwriter para escrever
             CSVWriter writer = new CSVWriter(new FileWriter(csvFile), ';', CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-            for (Aula a : h.getAulas()) {
+
+            for (Aula a : horario.getAulas()) {
                 String[] rowData = { listToString(a.cursos()), a.uc(), a.turno().nome(), listToString(a.turmas()),
                         Integer.toString(a.turno().numInscritos()), a.data().getDayOfWeek().toString(),
                         a.horaInicio().format(TIME_FORMATTER), a.horaFim().format(TIME_FORMATTER),
                         a.data().format(DATE_FORMATTER),
                         a.sala().nome(),
-                        Integer.toString(a.sala().lotacao()) };
+                        Integer.toString(a.sala().lotacao())};
                 writer.writeNext(rowData);
             }
             writer.close();
@@ -110,6 +141,7 @@ public class FileManager {
             System.err.println("gravaEmCSV(h,caminhoDeOutput): Erro ao escrever no ficheiro");
         }
     }
+
 
     private static String listToString(List<String> list) {
         if (list.size() == 0)
