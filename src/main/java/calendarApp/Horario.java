@@ -140,8 +140,11 @@ public class Horario {
         return false;
     }
 
-    //retorna true se houver colisões
-    private boolean doTheyOverlap(Aula a, Aula b) {
+    /**
+     * @param a,b recebe duas Aulas que irão ser comparadas
+     * @return true se houver sobreposições
+     */
+    public boolean doTheyOverlap(Aula a, Aula b) {
         if(!a.data().equals(b.data()))
             return false;
         return !a.horaInicio().isAfter(b.horaFim()) && !b.horaInicio().isAfter(a.horaFim());
