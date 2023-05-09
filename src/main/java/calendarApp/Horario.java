@@ -98,6 +98,10 @@ public class Horario {
         adicionarAula(aula);
     }
 
+    /**
+     *
+     * @return lista com todas as ucs associadas ás aulas
+     */
     public List<String> getUcs(){
         List<String> list = new ArrayList<>();
         for (Aula a : aulas) {
